@@ -1,0 +1,33 @@
+/* Product Filter Styles for Our Products page */
+.category-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s;
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.category-btn:hover {
+    background-color: #e5e7eb;
+}
+
+.category-btn.active {
+    background-color: #eab308;
+    color: white;
+}
+
+.category-btn.active:hover {
+    background-color: #ca8a04;
+}
+
+.product-card {
+    transform: scale(1);
+    transition: all 0.5s;
+}
+
+.product-card.hidden {
+    transform: scale(0.95);
+    opacity: 0;
+}

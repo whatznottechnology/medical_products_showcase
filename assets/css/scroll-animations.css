@@ -1,0 +1,64 @@
+/* Scroll Animations for Why ZEGNEN page */
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Intersection Observer Animations */
+[data-scroll] {
+    transition: all 1s ease-out;
+}
+
+[data-scroll="fadeUp"].is-visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+[data-scroll="slideRight"].is-visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+[data-scroll="slideLeft"].is-visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+[data-scroll="fadeIn"].is-visible {
+    opacity: 1;
+}
+
+/* Timeline Animation */
+.timeline-item {
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.6s ease-out;
+}
+
+.timeline-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Feature Card Hover Effects */
+.feature-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Smooth image loading */
+img {
+    transition: opacity 0.3s ease;
+}
+
+img[loading] {
+    opacity: 0;
+}
+
+img.loaded {
+    opacity: 1;
+}
