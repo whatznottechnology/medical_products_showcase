@@ -60,7 +60,7 @@ echo getNavigation();
 
 <main class="relative z-10" style="font-family: 'Inter', sans-serif;">
     <!-- Breadcrumb Navigation -->
-    <section class="bg-white border-b border-gray-200 py-3 mt-16">
+    <section class="bg-white border-b border-gray-200 py-3 mt-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
             <nav class="flex items-center space-x-2 text-sm text-gray-500">
                 <a href="index.php" class="hover:text-yellow-500 transition-colors">Home</a>
@@ -453,7 +453,7 @@ echo getNavigation();
                             <button type="submit" 
                                     class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold rounded-lg px-6 py-3 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                 </svg>
                                 Send Inquiry
                             </button>

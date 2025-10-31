@@ -108,21 +108,22 @@
 
 @media (max-width: 768px) {
     .masonry-gallery-section {
-        padding: 2rem 0;
+        padding: 1.5rem 0;
+        min-height: auto;
     }
     
     .gallery-container {
-        height: 70vh;
-        min-height: 500px;
+        height: 65vh;
+        min-height: 450px;
         border-radius: 16px;
-        padding: 15px;
+        padding: 12px;
     }
     
     .masonry-track {
-        grid-template-columns: repeat(auto-fill, 200px);
+        grid-template-columns: repeat(auto-fill, 180px);
         grid-template-rows: repeat(2, 1fr);
-        gap: 12px;
-        animation-duration: 60s;
+        gap: 10px;
+        animation-duration: 50s;
     }
     
     /* On mobile, portrait images span full height */
@@ -134,19 +135,35 @@
     .masonry-card.square {
         grid-row: span 1;
     }
+    
+    /* Reduce hover effect on mobile */
+    .masonry-card:hover {
+        transform: scale(1.02) translateY(-4px);
+    }
 }
 
 @media (max-width: 480px) {
+    .masonry-gallery-section {
+        padding: 1rem 0;
+    }
+    
     .gallery-container {
-        height: 60vh;
-        min-height: 400px;
+        height: 55vh;
+        min-height: 350px;
         border-radius: 12px;
-        padding: 12px;
+        padding: 10px;
+        width: 98%;
     }
     
     .masonry-track {
-        grid-template-columns: repeat(auto-fill, 160px);
-        gap: 10px;
-        animation-duration: 50s;
+        grid-template-columns: repeat(auto-fill, 140px);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 8px;
+        animation-duration: 40s;
+    }
+    
+    /* Further reduce hover effect on small mobile */
+    .masonry-card:hover {
+        transform: scale(1.01) translateY(-2px);
     }
 }

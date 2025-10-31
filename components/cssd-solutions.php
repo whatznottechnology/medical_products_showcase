@@ -50,12 +50,12 @@ function getCssdSolutionsSection() {
                     </div>
 
                     <!-- CTA Button -->
-                    <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition-colors duration-300 flex items-center justify-center text-sm sm:text-base">
-                        <span>Explore CSSD Solutions</span>
+                    <a href="our-products" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition-colors duration-300 flex items-center justify-center text-sm sm:text-base">
+                        <span>Explore Our  Products</span>
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

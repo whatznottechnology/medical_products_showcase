@@ -4,12 +4,16 @@ require_once 'components/navigation.php';
 require_once 'components/footer.php';
 
 // Output the header and navigation
-echo getHeader('About Us - ZEGNEN');
+echo getHeader(
+    'About Us - ZEGNEN International Company | CSSD Solutions Provider',
+    'Learn about ZEGNEN International Company - A global leader in CSSD products manufacturing. ISO 13485 certified, CE marked products. Delivering sterilization packaging, monitoring solutions, instrument care & infection control products to healthcare facilities worldwide.',
+    'about ZEGNEN, CSSD manufacturer, sterilization company, medical device manufacturer, ISO 13485, CE certification, healthcare solutions, infection control company, sterilization packaging manufacturer, CSSD solutions provider'
+);
 echo getNavigation();
 
 ?>
 
-<main class="relative z-10">
+<main class="relative z-10 mt-16">
     <!-- Intro Parallax -->
     <section class="parallax parallax-1 hero-overlay flex items-center" style="min-height:60vh;">
         <div class="max-w-6xl mx-auto px-6 lg:px-12 py-24 text-white">

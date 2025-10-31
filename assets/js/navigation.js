@@ -103,4 +103,33 @@ document.addEventListener('DOMContentLoaded', function() {
     drawerPanel.addEventListener('click', function(e) {
         e.stopPropagation();
     });
+
+    // Prevent body scroll when drawer is open (iOS fix)
+    let scrollPosition = 0;
+    const preventScroll = () => {
+        scrollPosition = window.pageYOffset;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosition}px`;
+        document.body.style.width = '100%';
+    };
+
+    const allowScroll = () => {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollPosition);
+    };
+
+    // Update open/close drawer functions for iOS
+    const originalOpenDrawer = openDrawer;
+    openDrawer = function() {
+        originalOpenDrawer();
+        preventScroll();
+    };
+
+    const originalCloseDrawer = closeDrawer;
+    closeDrawer = function() {
+        originalCloseDrawer();
+        allowScroll();
+    };
 });

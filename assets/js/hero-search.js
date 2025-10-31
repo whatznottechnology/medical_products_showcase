@@ -97,3 +97,21 @@ if (searchInput && placeholder) {
     // Initialize animations
     startTypingAnimation();
 }
+
+// Handle form submission
+const searchForm = document.getElementById('heroSearchForm');
+if (searchForm) {
+    searchForm.addEventListener('submit', function(e) {
+        // Only prevent default if search is empty
+        if (searchInput.value.trim() === '') {
+            e.preventDefault();
+            // Show a subtle shake animation or focus the input
+            searchInput.focus();
+            searchInput.classList.add('ring-2', 'ring-yellow-500', 'ring-opacity-50');
+            setTimeout(() => {
+                searchInput.classList.remove('ring-2', 'ring-yellow-500', 'ring-opacity-50');
+            }, 500);
+        }
+        // Otherwise, let the form submit normally to search-results
+    });
+}

@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /components/
+Disallow: /assets/js/
+Disallow: /assets/css/
+
+Sitemap: https://www.zegnen.com/sitemap.xml
+
+# Allow common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Crawl delay
+Crawl-delay: 1

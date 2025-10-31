@@ -1,57 +1,44 @@
 <?php
-function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN") {
+function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN", $description = "ZEGNEN - Leading manufacturer of CSSD products for sterilization & infection control in healthcare institutions worldwide", $keywords = "CSSD products, sterilization, infection control, healthcare, medical devices, autoclave tape, bowie dick test, sterilization indicators") {
     ob_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="<?php echo htmlspecialchars($description); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($keywords); ?>">
+    <meta name="author" content="ZEGNEN International Company">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ffcc09">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? '/'); ?>">
+    <meta property="og:title" content="<?php echo htmlspecialchars($title); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($description); ?>">
+    <meta property="og:image" content="assets/images/zic_logo.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? '/'); ?>">
+    <meta property="twitter:title" content="<?php echo htmlspecialchars($title); ?>">
+    <meta property="twitter:description" content="<?php echo htmlspecialchars($description); ?>">
+    <meta property="twitter:image" content="assets/images/zic_logo.png">
+    
     <title><?php echo $title; ?></title>
+    <link rel="icon" type="image/png" href="assets/images/zic_fav.png?v=1.0">
+    <link rel="shortcut icon" type="image/png" href="assets/images/zic_fav.png?v=1.0">
+    <link rel="apple-touch-icon" href="assets/images/zic_fav.png?v=1.0">
+    <link rel="canonical" href="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? '/'); ?>">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'yellow': {
-                            300: '#fff3a0',
-                            400: '#ffcc09',
-                            500: '#ffcc09',
-                            600: '#e6b008',
-                            700: '#cc9c07',
-                            800: '#b38806',
-                            900: '#997505'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="assets/js/tailwind-config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .hero-background {
-            background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 100vh;
-        }
-        .hero-overlay {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
-        }
-        .typing-animation {
-            border-right: 2px solid #ffcc09;
-            animation: blink 0.8s infinite;
-        }
-        @keyframes blink {
-            0%, 50% { border-right-color: #ffcc09; }
-            51%, 100% { border-right-color: transparent; }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/mobile-optimizations.css">
+    <link rel="stylesheet" href="assets/css/popup.css">
 </head>
 <body class="overflow-x-hidden hero-background">
 <?php

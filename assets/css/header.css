@@ -1,0 +1,26 @@
+/* Header Styles */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.hero-background {
+    background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.hero-overlay {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+.typing-animation {
+    border-right: 2px solid #ffcc09;
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { border-right-color: #ffcc09; }
+    51%, 100% { border-right-color: transparent; }
+}

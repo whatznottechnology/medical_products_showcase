@@ -227,21 +227,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mobile Parallax Effect using transform
     if (window.innerWidth <= 768) {
-        const parallaxBg = document.querySelector('.parallax-section-mobile .parallax-bg');
+        const parallaxSections = document.querySelectorAll('.parallax-section-mobile');
         
-        if (parallaxBg) {
-            window.addEventListener('scroll', () => {
-                const section = parallaxBg.parentElement;
-                const rect = section.getBoundingClientRect();
-                
-                // Only apply parallax when section is in viewport
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    const scrolled = window.pageYOffset;
-                    const sectionTop = section.offsetTop;
-                    const offset = (scrolled - sectionTop) * 0.5;
-                    parallaxBg.style.transform = `translateY(${offset}px)`;
-                }
-            });
-        }
+        parallaxSections.forEach(section => {
+            const parallaxBg = section.querySelector('.parallax-bg');
+            
+            if (parallaxBg) {
+                window.addEventListener('scroll', () => {
+                    const rect = section.getBoundingClientRect();
+                    
+                    // Only apply parallax when section is in viewport
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        const scrolled = window.pageYOffset;
+                        const sectionTop = section.offsetTop;
+                        const offset = (scrolled - sectionTop) * 0.5;
+                        parallaxBg.style.transform = `translateY(${offset}px)`;
+                    }
+                });
+            }
+        });
     }
 });

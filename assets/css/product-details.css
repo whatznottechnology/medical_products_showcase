@@ -118,14 +118,14 @@ body {
 
 /* Parallax Section Styles */
 .parallax-section {
-    perspective: 1px;
     height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .parallax-bg {
-    transform: translateZ(-1px) scale(2);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
 }
 
 /* Video Player Styles */

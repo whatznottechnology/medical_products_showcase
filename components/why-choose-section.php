@@ -16,7 +16,7 @@ function getWhyChooseSection() {
         </div>
 
         <!-- Features Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+        <div class="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             <!-- Feature 1: Expert Guidance -->
             <div class="group cursor-pointer">
                 <div class="bg-white bg-opacity-90 rounded-2xl sm:rounded-3xl overflow-hidden transform transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:bg-opacity-100">
@@ -79,6 +79,71 @@ function getWhyChooseSection() {
                         <p class="text-gray-600 text-sm sm:text-base leading-relaxed transition-colors duration-300 group-hover:text-gray-800">
                             Our commitment to sustainability and eco-friendly solutions ensures that healthcare facilities can maintain sterile environments while minimizing environmental impact.
                         </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Horizontal Scroll -->
+        <div class="md:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
+            <div class="flex gap-4 pb-4" style="scroll-snap-type: x mandatory;">
+                <!-- Feature 1: Expert Guidance -->
+                <div class="group cursor-pointer flex-shrink-0" style="width: 75vw; scroll-snap-align: start;">
+                    <div class="bg-white bg-opacity-90 rounded-2xl overflow-hidden transform transition-all duration-500 active:scale-95 h-full">
+                        <div class="aspect-[5/4] relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="Medical Expert Consulting"
+                                class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">
+                                High-Quality Certified Products
+                            </h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Every product is designed and tested to meet international quality standards such as ISO, CE, and EN norms, ensuring maximum safety, efficiency, and compliance in sterilization processes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Precision Manufacturing -->
+                <div class="group cursor-pointer flex-shrink-0" style="width: 75vw; scroll-snap-align: start;">
+                    <div class="bg-white bg-opacity-90 rounded-2xl overflow-hidden transform transition-all duration-500 active:scale-95 h-full">
+                        <div class="aspect-[5/4] relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="Manufacturing Facility"
+                                class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">
+                                In-Depth CSSD Understanding
+                            </h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                With years of experience in healthcare and medical device industry, we offer tailored solutions for hospitals and labs with reliable customer support and training.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Infection Control -->
+                <div class="group cursor-pointer flex-shrink-0" style="width: 75vw; scroll-snap-align: start;">
+                    <div class="bg-white bg-opacity-90 rounded-2xl overflow-hidden transform transition-all duration-500 active:scale-95 h-full">
+                        <div class="aspect-[5/4] relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="Clean Hospital Environment"
+                                class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">
+                                Sustainable & Eco-Friendly Focus
+                            </h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Our commitment to sustainability and eco-friendly solutions ensures that healthcare facilities can maintain sterile environments while minimizing environmental impact.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

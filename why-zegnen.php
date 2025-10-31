@@ -4,15 +4,19 @@ require_once 'components/navigation.php';
 require_once 'components/footer.php';
 
 // Output the header and navigation
-echo getHeader('Why Choose ZEGNEN - Leading CSSD Solutions Provider');
+echo getHeader(
+    'Why Choose ZEGNEN - Leading CSSD Solutions Provider | Quality & Innovation',
+    'Discover why leading healthcare facilities choose ZEGNEN: ISO 13485 certified quality, CE marked products, 24/7 expert support, advanced sterilization monitoring, eco-friendly solutions, comprehensive training programs. Uncompromising quality standards for patient safety.',
+    'why choose ZEGNEN, CSSD excellence, sterilization quality, ISO certified CSSD, CE marked sterilization, healthcare quality standards, infection control excellence, sterilization innovation, medical device quality, CSSD training, patient safety, sterilization compliance'
+);
 echo getNavigation();
 ?>
 
 <main class="relative">
     <!-- Hero Section with Forest Background -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80')] bg-cover bg-center">
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80')] bg-cover bg-center bg-fixed">
         <div class="absolute inset-0 bg-black/50"></div>
-        <div class="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 mt-20 sm:mt-24 lg:mt-32">
+        <div class="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 transform transition-all duration-700 translate-y-20 opacity-0" data-scroll="fadeUp" style="font-family: 'Inter', sans-serif;">
                 Why Choose ZEGNEN?
             </h1>

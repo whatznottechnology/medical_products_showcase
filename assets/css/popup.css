@@ -1,0 +1,89 @@
+/* assets/css/popup.css */
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+    #leadPopup .max-w-md {
+        margin: 1rem;
+        max-width: calc(100vw - 2rem);
+    }
+
+    #leadPopup .p-6 {
+        padding: 1rem;
+    }
+
+    #leadPopup .h-80 {
+        height: 12rem;
+    }
+
+    /* Stack inputs vertically on very small screens */
+    #leadPopup .grid-cols-1.md\\:grid-cols-2 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Smooth animations */
+#leadPopup {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#leadPopup > div > div {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Form focus states */
+#leadForm input:focus {
+    box-shadow: 0 0 0 3px rgba(255, 204, 9, 0.1);
+}
+
+/* Button hover effects */
+#leadForm button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 204, 9, 0.3);
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+.loader-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* CSS-based loading spinner */
+.loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #000000;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Prevent URL flashing */
+#leadPopup {
+    position: fixed !important;
+    z-index: 9999 !important;
+}

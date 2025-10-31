@@ -1,0 +1,85 @@
+/* Brand Partners Section Styles */
+.brand-slider-container {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    padding: 40px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.brand-slider {
+    display: flex;
+    align-items: center;
+    animation: scrollBrands 30s linear infinite;
+    will-change: transform;
+}
+
+.brand-item {
+    flex-shrink: 0;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-logo {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.brand-logo:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+.brand-image {
+    max-height: 100%;
+    max-width: 180px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.7);
+    transition: all 0.3s ease;
+}
+
+.brand-item:hover .brand-image {
+    filter: grayscale(0%) opacity(1);
+}
+
+@keyframes scrollBrands {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.brand-slider-container:hover .brand-slider {
+    animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+    .brand-item {
+        padding: 0 30px;
+    }
+    .brand-logo {
+        height: 50px;
+    }
+    .brand-image {
+        max-width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-item {
+        padding: 0 20px;
+    }
+    .brand-logo {
+        height: 40px;
+    }
+    .brand-image {
+        max-width: 120px;
+    }
+}
