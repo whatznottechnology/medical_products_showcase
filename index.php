@@ -8,6 +8,7 @@ require_once 'components/why-choose-section.php';
 require_once 'components/masonry-gallery.php';
 require_once 'components/brand-partners.php';
 require_once 'components/business-solutions.php';
+require_once 'components/reviews.php';
 require_once 'components/popup.php';
 require_once 'components/footer.php';
 
@@ -41,6 +42,9 @@ echo getBrandPartnersSection();
 
 // Output the Business Solutions section
 echo getBusinessSolutionsSection();
+
+// Output the reviews section
+echo getReviewsSection();
 
 // Output the popup
 echo getLeadPopup();
