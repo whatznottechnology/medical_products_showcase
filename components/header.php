@@ -6,15 +6,17 @@ function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN", 
     
     try {
         require_once __DIR__ . '/../config/Database.php';
+        require_once __DIR__ . '/../includes/frontend-helper.php';
         $db = Database::getInstance();
         $banner = $db->fetchOne("SELECT image_path FROM banners WHERE page = ? AND status = 'active' ORDER BY created_at DESC LIMIT 1", [$page]);
         
-        // Use relative path (no leading slash) since site is in subdirectory
         if (!empty($banner['image_path'])) {
-            $heroBackground = $banner['image_path'];
+            $heroBackground = FrontendHelper::getImageUrl($banner['image_path']);
+            if (empty($heroBackground)) {
+                $heroBackground = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80';
+            }
         }
     } catch (Exception $e) {
-        // Fallback to default background if database error
         error_log("Header banner fetch error: " . $e->getMessage());
     }
     

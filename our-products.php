@@ -3,6 +3,7 @@ require_once 'config/Database.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/footer.php';
+require_once 'includes/frontend-helper.php';
 
 // Fetch products from database
 $db = Database::getInstance();
@@ -10,7 +11,7 @@ $products = $db->fetchAll("SELECT * FROM products WHERE status = 'active' ORDER 
 
 // Fetch banner from banners table
 $banner = $db->fetchOne("SELECT * FROM banners WHERE page = 'our-products' AND status = 'active' LIMIT 1");
-$bannerImage = !empty($banner['image_path']) ? $banner['image_path'] : '';
+$bannerImage = !empty($banner['image_path']) ? FrontendHelper::getImageUrl($banner['image_path']) : '';
 $bannerTitle = !empty($banner['title']) ? $banner['title'] : 'CSSD Product Solutions';
 
 // Output the header and navigation
@@ -54,8 +55,10 @@ echo getNavigation();
                 <?php foreach ($products as $product): 
                     // Use main_image (featured 1:1 image) for product cards
                     $mainImage = !empty($product['main_image']) 
-                        ? str_replace('//', '/', $product['main_image']) 
-                        : 'assets/images/placeholder.png';
+                        ? FrontendHelper::getImageUrl(str_replace('//', '/', $product['main_image']))
+                        : '';
+                    
+                    if (empty($mainImage)) continue; // Skip if no valid image
                     
                     // Get badge/certification
                     $badge = !empty($product['badge']) ? $product['badge'] : 'ISO Certified';
@@ -68,8 +71,7 @@ echo getNavigation();
                         <div class="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative p-6 overflow-hidden">
                             <img src="<?php echo htmlspecialchars($mainImage); ?>" 
                                  alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                                 class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
-                                 onerror="this.src='assets/images/placeholder.png'">
+                                 class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110">
                             <?php if (!empty($badge)): ?>
                             <div class="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1.5 rounded-full text-sm font-semibold shadow-md">
                                 <?php echo htmlspecialchars($badge); ?>

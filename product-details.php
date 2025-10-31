@@ -4,6 +4,7 @@ require_once 'config/settings.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/footer.php';
+require_once 'includes/frontend-helper.php';
 
 // Get product ID or slug from URL
 $productIdentifier = $_GET['id'] ?? $_GET['slug'] ?? '';
@@ -20,12 +21,11 @@ $db = Database::getInstance();
 if (is_numeric($productIdentifier)) {
     $product = $db->fetchOne("SELECT * FROM products WHERE id = ? AND status = 'active'", [(int)$productIdentifier]);
 } else {
-    // Try slug-based search with fallback
+    // Try slug-based search
     try {
-        // First try actual slug column
         $product = $db->fetchOne("SELECT * FROM products WHERE slug = ? AND status = 'active'", [$productIdentifier]);
     } catch (PDOException $e) {
-        // If slug column doesn't exist, fall back to name-based matching
+        // Fall back to name-based matching
         $product = $db->fetchOne("SELECT * FROM products WHERE REPLACE(LOWER(name), ' ', '-') = ? AND status = 'active'", [$productIdentifier]);
     }
 }
@@ -47,16 +47,22 @@ $productImages = $db->fetchAll(
 $parallaxImages = [];
 $galleryImages = [];
 foreach ($productImages as $img) {
-    if ($img['image_type'] === 'parallax') {
-        $parallaxImages[] = $img['image_path'];
-    } else {
-        $galleryImages[] = $img['image_path'];
+    $imageUrl = FrontendHelper::getImageUrl($img['image_path']);
+    if (!empty($imageUrl)) {
+        if ($img['image_type'] === 'parallax') {
+            $parallaxImages[] = $imageUrl;
+        } else {
+            $galleryImages[] = $imageUrl;
+        }
     }
 }
 
 // If no images in product_images table, use main_image
 if (empty($parallaxImages) && !empty($product['main_image'])) {
-    $parallaxImages[] = $product['main_image'];
+    $mainImageUrl = FrontendHelper::getImageUrl($product['main_image']);
+    if (!empty($mainImageUrl)) {
+        $parallaxImages[] = $mainImageUrl;
+    }
 }
 
 // Decode JSON fields
@@ -65,7 +71,7 @@ $product['features'] = !empty($product['features']) ? json_decode($product['feat
 $product['specifications'] = !empty($product['specifications']) ? json_decode($product['specifications'], true) : [];
 
 // Get first image for main display (database already has full path like uploads/products/image.png)
-$firstImage = !empty($parallaxImages) ? $parallaxImages[0] : 'assets/images/placeholder.png';
+$firstImage = !empty($parallaxImages) ? $parallaxImages[0] : '';
 
 // Fetch active reviews for this product (display_location can be 'product' or 'both')
 $reviews = $db->fetchAll("SELECT * FROM reviews WHERE status = 'active' AND (display_location = 'product' OR display_location = 'both') ORDER BY created_at DESC LIMIT 10");

@@ -1,6 +1,7 @@
 <?php
 function getBrandPartnersSection() {
     require_once __DIR__ . '/../config/Database.php';
+    require_once __DIR__ . '/../includes/frontend-helper.php';
     
     // Fetch active brands
     $db = Database::getInstance();
@@ -32,14 +33,13 @@ function getBrandPartnersSection() {
                 // Output brands twice for infinite scroll effect
                 for ($i = 0; $i < 2; $i++) {
                     foreach ($brands as $brand) {
-                        // Logo path already includes uploads/brands/ prefix
-                        $logoPath = str_replace('//', '/', $brand['logo_path']);
+                        $logoPath = FrontendHelper::getImageUrl(str_replace('//', '/', $brand['logo_path']));
+                        if (empty($logoPath)) continue;
                         echo '<div class="brand-item">
                                 <div class="brand-logo">
                                     <img src="' . htmlspecialchars($logoPath) . '" 
                                          alt="' . htmlspecialchars($brand['name']) . '" 
-                                         class="brand-image"
-                                         onerror="this.parentElement.parentElement.style.display=\'none\'">
+                                         class="brand-image">
                                 </div>
                                 <div class="brand-name">
                                     ' . htmlspecialchars($brand['name']) . '
