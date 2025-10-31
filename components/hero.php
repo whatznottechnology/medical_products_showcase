@@ -1,8 +1,22 @@
 <?php
 function getHeroSection() {
+    // Fetch banner from database
+    require_once __DIR__ . '/../config/Database.php';
+    $db = Database::getInstance();
+    $banner = $db->fetchOne("SELECT image_path FROM banners WHERE page = ? AND status = 'active' ORDER BY created_at DESC LIMIT 1", ['home']);
+    
+    $heroBannerPath = !empty($banner['image_path']) 
+        ? $banner['image_path']
+        : 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80';
+    
     ob_start();
 ?>
-<main class="relative z-10 min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-24 sm:pt-20 pb-8 md:pt-20">
+<!-- Hero Section with Background -->
+<div class="relative min-h-screen" style="background-image: url('<?php echo htmlspecialchars($heroBannerPath); ?>'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <!-- Dark overlay for better text readability -->
+    <div class="absolute inset-0 bg-black/40 z-0"></div>
+    
+    <main class="relative z-10 min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-24 sm:pt-20 pb-8 md:pt-20">
     <div class="max-w-6xl">
         <!-- Main Heading -->
         <h1 class="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light leading-tight mb-2 sm:mb-3">
@@ -35,11 +49,11 @@ function getHeroSection() {
                         <div class="flex-1 relative">
                             <input type="text" id="searchInput" name="q"
                                 class="w-full text-sm sm:text-base lg:text-lg text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400"
-                                placeholder="Search"
+                                placeholder=""
                                 autocomplete="off">
                             <div class="absolute top-0 left-0 text-sm sm:text-base lg:text-lg font-medium pointer-events-none" id="placeholder">
                                 <span class="text-gray-400">Search </span>
-                                <span class="text-yellow-500 font-semibold">Ste</span>
+                                <span class="text-yellow-500 font-semibold">Sterilization</span>
                                 <span class="text-gray-400"> Products</span>
                             </div>
                         </div>
@@ -59,6 +73,7 @@ function getHeroSection() {
         </div>
     </div>
 </main>
+</div>
 <?php
     return ob_get_clean();
 }

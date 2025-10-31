@@ -1,58 +1,81 @@
 <?php
+require_once 'config/Database.php';
+require_once 'config/settings.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/footer.php';
 
-// Product data
-$product = [
-    'name' => 'Bowie-Dick Test Pack',
-    'category' => 'Sterilization Monitoring Products',
-    'image' => 'assets/images/Bowie-Dick test.png',
-    'description' => 'A Bowie-Dick test is used in pre-vacuum type steam sterilizers to ensure that all air is removed and there are no air leaks. This test confirms proper air removal and steam penetration in the sterilization process.',
-    'details' => 'The Bowie-Dick Test Pack is an essential quality control tool designed specifically for pre-vacuum steam sterilizers. It ensures complete air removal from the sterilization chamber, which is critical for effective sterilization. The test pack uses a chemical indicator that changes color uniformly when exposed to proper steam conditions, making it easy to verify sterilizer performance. Our test packs are manufactured according to ISO 11140 and EN 867 standards, ensuring reliable and consistent results. Each pack is individually wrapped and designed for single-use to maintain accuracy and prevent cross-contamination.',
-    'instructions' => [
-        'Single test use only',
-        'Run a pre-vacuum cycle of 10 minutes at 121°C or 3.5 minutes at 134°C (ISO/EN standard)',
-        'The paper materials can be discarded into a paper recycle bin',
-        'PASS condition shows a uniform black/brown color pattern on the indicator sheet'
-    ],
-    'features' => [
-        'ISO/EN compliant',
-        'Reliable color change indicator',
-        'Detects air leaks or steam penetration failure',
-        'Eco-friendly paper materials'
-    ],
-    'specifications' => [
-        ['label' => 'Test Type', 'value' => 'Bowie-Dick Air Removal Test'],
-        ['label' => 'Sterilizer Type', 'value' => 'Pre-vacuum Steam Autoclave'],
-        ['label' => 'Test Cycle', 'value' => '10 minutes at 121°C or 3.5 minutes at 134°C'],
-        ['label' => 'Standard Compliance', 'value' => 'ISO 11140, EN 867'],
-        ['label' => 'Indicator Type', 'value' => 'Chemical Indicator (Color Change)'],
-        ['label' => 'Usage', 'value' => 'Single Use, Daily Test Recommended'],
-        ['label' => 'Shelf Life', 'value' => '2-3 years from manufacture date'],
-        ['label' => 'Storage', 'value' => 'Cool, dry place away from direct sunlight']
-    ]
-];
+// Get product ID or slug from URL
+$productIdentifier = $_GET['id'] ?? $_GET['slug'] ?? '';
 
-// Reviews data - Split into two rows
-$reviewsRow1 = [
-    ['name' => 'Dr. Sarah Johnson', 'role' => 'Hospital Manager', 'rating' => 5, 'comment' => 'Excellent quality test packs. We use them daily and they provide consistent, reliable results every time.'],
-    ['name' => 'Michael Chen', 'role' => 'Lab Technician', 'rating' => 5, 'comment' => 'Easy to use and interpret. The color change is very clear and unmistakable. Highly recommend!'],
-    ['name' => 'Dr. Priya Sharma', 'role' => 'Clinic Director', 'rating' => 5, 'comment' => 'ISO compliant and eco-friendly. Great product at a competitive price point.'],
-    ['name' => 'James Anderson', 'role' => 'Quality Control Officer', 'rating' => 5, 'comment' => 'Been using these for 2 years now. Never had a false positive or negative. Very dependable.'],
-    ['name' => 'Emma Thompson', 'role' => 'Sterilization Specialist', 'rating' => 5, 'comment' => 'The best Bowie-Dick packs we have tried. Clear instructions and excellent customer support.']
-];
+if (empty($productIdentifier)) {
+    header('Location: our-products.php');
+    exit;
+}
 
-$reviewsRow2 = [
-    ['name' => 'Dr. Robert Williams', 'role' => 'Medical Director', 'rating' => 5, 'comment' => 'Outstanding product quality. Helps us maintain the highest sterilization standards in our facility.'],
-    ['name' => 'Lisa Martinez', 'role' => 'Lab Manager', 'rating' => 5, 'comment' => 'Reliable results every single time. Our team trusts this product completely.'],
-    ['name' => 'David Lee', 'role' => 'Healthcare Professional', 'rating' => 5, 'comment' => 'Cost-effective solution without compromising on quality. Perfect for our needs.'],
-    ['name' => 'Dr. Patricia Brown', 'role' => 'Surgery Department Head', 'rating' => 5, 'comment' => 'These test packs have become an essential part of our daily sterilization protocol.'],
-    ['name' => 'Mark Thompson', 'role' => 'Quality Assurance Lead', 'rating' => 5, 'comment' => 'Consistent performance and easy to interpret results. Highly recommended for any facility.']
-];
+// Fetch product from database (support both ID and slug)
+$db = Database::getInstance();
+
+// Try to fetch by ID first (if it's numeric), otherwise by slug (if column exists)
+if (is_numeric($productIdentifier)) {
+    $product = $db->fetchOne("SELECT * FROM products WHERE id = ? AND status = 'active'", [(int)$productIdentifier]);
+} else {
+    // Try slug-based search with fallback
+    try {
+        // First try actual slug column
+        $product = $db->fetchOne("SELECT * FROM products WHERE slug = ? AND status = 'active'", [$productIdentifier]);
+    } catch (PDOException $e) {
+        // If slug column doesn't exist, fall back to name-based matching
+        $product = $db->fetchOne("SELECT * FROM products WHERE REPLACE(LOWER(name), ' ', '-') = ? AND status = 'active'", [$productIdentifier]);
+    }
+}
+
+if (!$product) {
+    header('Location: our-products.php');
+    exit;
+}
+
+$productId = $product['id'];
+
+// Fetch product images from product_images table
+$productImages = $db->fetchAll(
+    "SELECT image_path, image_type FROM product_images WHERE product_id = ? ORDER BY display_order ASC",
+    [$productId]
+);
+
+// Separate images by type
+$parallaxImages = [];
+$galleryImages = [];
+foreach ($productImages as $img) {
+    if ($img['image_type'] === 'parallax') {
+        $parallaxImages[] = $img['image_path'];
+    } else {
+        $galleryImages[] = $img['image_path'];
+    }
+}
+
+// If no images in product_images table, use main_image
+if (empty($parallaxImages) && !empty($product['main_image'])) {
+    $parallaxImages[] = $product['main_image'];
+}
+
+// Decode JSON fields
+$product['instructions'] = !empty($product['instructions']) ? json_decode($product['instructions'], true) : [];
+$product['features'] = !empty($product['features']) ? json_decode($product['features'], true) : [];
+$product['specifications'] = !empty($product['specifications']) ? json_decode($product['specifications'], true) : [];
+
+// Get first image for main display (database already has full path like uploads/products/image.png)
+$firstImage = !empty($parallaxImages) ? $parallaxImages[0] : 'assets/images/placeholder.png';
+
+// Fetch active reviews for this product (display_location can be 'product' or 'both')
+$reviews = $db->fetchAll("SELECT * FROM reviews WHERE status = 'active' AND (display_location = 'product' OR display_location = 'both') ORDER BY created_at DESC LIMIT 10");
+
+// Split reviews into two rows for carousel effect
+$reviewsRow1 = array_slice($reviews, 0, 5);
+$reviewsRow2 = array_slice($reviews, 5, 5);
 
 // Output the header and navigation
-echo getHeader('Product Details - Bowie-Dick Test Pack | ZEGNEN');
+echo getHeader(htmlspecialchars($product['name']) . ' - Product Details | ZEGNEN');
 echo getNavigation();
 ?>
 
@@ -78,17 +101,35 @@ echo getNavigation();
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                 <!-- Left: Product Image -->
                 <div class="relative">
-                    <div class="aspect-square bg-gray-100 rounded-2xl overflow-hidden">
-                        <img src="<?php echo $product['image']; ?>?auto=format&fit=crop&w=800&q=80" 
-                             alt="<?php echo $product['name']; ?>" 
+                    <div class="aspect-square bg-gray-100 rounded-2xl overflow-hidden mb-4">
+                        <img id="mainProductImage" 
+                             src="<?php echo $firstImage; ?>" 
+                             alt="<?php echo htmlspecialchars($product['name']); ?>" 
                              class="w-full h-full object-cover">
                     </div>
+                    
+                    <!-- Thumbnail Gallery -->
+                    <?php if (count($galleryImages) > 1): ?>
+                    <div class="grid grid-cols-4 gap-2">
+                        <?php foreach (array_slice($galleryImages, 0, 4) as $index => $image): ?>
+                        <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-75 transition-opacity border-2 border-transparent hover:border-yellow-500"
+                             onclick="changeMainImage('<?php echo htmlspecialchars($image); ?>')">
+                            <img src="<?php echo htmlspecialchars($image); ?>" 
+                                 alt="Product view <?php echo $index + 1; ?>" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                    
                     <!-- ISO Badge -->
+                    <?php if (!empty($product['badge'])): ?>
                     <div class="absolute top-4 right-4 float-animation">
                         <span class="bg-yellow-500 text-gray-900 px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                            ISO/EN Certified
+                            <?php echo htmlspecialchars($product['badge']); ?>
                         </span>
                     </div>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Right: Product Info & Overview -->
@@ -96,18 +137,48 @@ echo getNavigation();
                     <!-- Category & Title -->
                     <div>
                         <span class="inline-block bg-gray-100 text-gray-700 px-4 py-1.5 rounded-full text-sm font-medium mb-3">
-                            <?php echo $product['category']; ?>
+                            CSSD Products
                         </span>
                         <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
-                            <?php echo $product['name']; ?>
+                            <?php echo htmlspecialchars($product['name']); ?>
                         </h1>
+                        <?php if (!empty($product['subtitle'])): ?>
+                        <p class="text-xl text-gray-600 mb-4"><?php echo htmlspecialchars($product['subtitle']); ?></p>
+                        <?php endif; ?>
                     </div>
+                    
+                    <!-- Price Display (if available) -->
+                    <?php if (!empty($product['price_min']) || !empty($product['price_max'])): ?>
+                    <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 border-2 border-yellow-200 rounded-xl p-4 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Price Range</p>
+                                <p class="text-2xl font-bold text-gray-900">
+                                    <?php if ($product['price_min'] && $product['price_max']): ?>
+                                        ₹<?php echo number_format($product['price_min'], 2); ?> - ₹<?php echo number_format($product['price_max'], 2); ?>
+                                    <?php elseif ($product['price_min']): ?>
+                                        Starting from ₹<?php echo number_format($product['price_min'], 2); ?>
+                                    <?php elseif ($product['price_max']): ?>
+                                        Up to ₹<?php echo number_format($product['price_max'], 2); ?>
+                                    <?php endif; ?>
+                                    <?php if (!empty($product['price_unit'])): ?>
+                                    <span class="text-base font-normal text-gray-600">/ <?php echo htmlspecialchars($product['price_unit']); ?></span>
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                            <svg class="w-10 h-10 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2">* Prices may vary based on quantity and customization</p>
+                    </div>
+                    <?php endif; ?>
 
                     <!-- Product Overview -->
                     <div class="border-l-4 border-yellow-500 pl-4 py-2">
                         <h2 class="text-lg font-semibold text-gray-900 mb-2">Product Overview</h2>
                         <p class="text-gray-700 leading-relaxed">
-                            <?php echo $product['description']; ?>
+                            <?php echo htmlspecialchars($product['description']); ?>
                         </p>
                     </div>
 
@@ -133,7 +204,7 @@ echo getNavigation();
                             </svg>
                             Request Quote
                         </button>
-                        <a href="tel:+918902056626" 
+                        <a href="<?php echo getPhoneUrl(); ?>" 
                            class="flex-1 bg-gray-900 hover:bg-black text-white font-semibold px-6 py-3.5 rounded-lg transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
@@ -147,12 +218,14 @@ echo getNavigation();
     </section>
 
     <!-- Parallax Section with Fixed Image -->
+    <?php if (!empty($parallaxImages)): ?>
     <section class="relative overflow-hidden parallax-section-mobile" style="height: 600px;">
         <!-- Full-width background image -->
         <div class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" 
-             style="background-image: url('assets/images/Group 2.png'); background-attachment: fixed;">
+             style="background-image: url('<?php echo htmlspecialchars($parallaxImages[0]); ?>'); background-attachment: fixed;">
         </div>
     </section>
+    <?php endif; ?>
 
     <!-- Tabbed Product Information Section -->
     <section class="bg-gray-50 py-12">
@@ -195,7 +268,7 @@ echo getNavigation();
                             Detailed Product Information
                         </h3>
                         <div class="prose max-w-none text-gray-700 leading-relaxed">
-                            <p class="text-base md:text-lg"><?php echo $product['details']; ?></p>
+                            <div class="text-base md:text-lg rich-text-content"><?php echo $product['details']; ?></div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                                 <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl border border-yellow-200">
@@ -223,7 +296,7 @@ echo getNavigation();
                 </div>
 
                 <!-- Instructions Tab -->
-                <div id="content-instructions" class="tab-content hidden">
+                <div id="content-instructions" class="tab-content" style="display: none;">
                     <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm">
                         <div class="flex items-center mb-6">
                             <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
@@ -234,45 +307,86 @@ echo getNavigation();
                             <h2 class="text-2xl font-bold text-gray-900">Instructions for Use</h2>
                         </div>
                         
-                        <!-- 60/40 Layout: Content and Video -->
+                        <!-- Side by side layout: Content 60% + Video 40% -->
                         <div class="instructions-video-layout">
-                            <!-- 60% Content Area -->
+                            <!-- Left: Instructions Content (60%) -->
                             <div>
+                                <?php if (!empty($product['instructions'])): ?>
                                 <ul class="space-y-4">
-                                    <?php foreach ($product['instructions'] as $index => $instruction): ?>
-                                    <li class="flex items-start text-gray-700 leading-relaxed p-4 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-all duration-300 transform hover:translate-x-2" style="animation-delay: <?php echo $index * 0.1; ?>s;">
+                                    <?php foreach ($product['instructions'] as $index => $instruction): 
+                                        // Handle both old format (string) and new format (array with text/video_url)
+                                        $text = is_array($instruction) ? ($instruction['text'] ?? '') : $instruction;
+                                    ?>
+                                    <li class="flex items-start text-gray-700 leading-relaxed p-4 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-all duration-300" style="animation-delay: <?php echo $index * 0.1; ?>s;">
                                         <span class="flex-shrink-0 w-8 h-8 bg-yellow-500 text-gray-900 rounded-full flex items-center justify-center font-bold mr-4 text-sm">
                                             <?php echo $index + 1; ?>
                                         </span>
-                                        <span class="pt-1"><?php echo $instruction; ?></span>
+                                        <span class="pt-1 flex-grow"><?php echo htmlspecialchars($text); ?></span>
                                     </li>
                                     <?php endforeach; ?>
                                 </ul>
+                                <?php else: ?>
+                                <p class="text-gray-600">No instructions available for this product.</p>
+                                <?php endif; ?>
                             </div>
                             
-                            <!-- 40% Video Area -->
+                            <!-- Right: Video (40%) -->
+                            <?php if (!empty($product['instructions_video'])): ?>
                             <div class="sticky top-24">
-                                <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg">
-                                    <div class="relative" style="padding-bottom: 56.25%; /* 16:9 aspect ratio */">
+                                <div class="bg-gradient-to-br from-red-50 to-yellow-50 rounded-xl border-2 border-red-100 overflow-hidden">
+                                    <div class="p-4 bg-gradient-to-r from-red-500 to-yellow-500">
+                                        <div class="flex items-center text-white">
+                                            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm3.5 10.5l-5 3A.5.5 0 018 13V7a.5.5 0 01.5-.5c.123 0 .247.046.342.134l5 3a.5.5 0 010 .732z"/>
+                                            </svg>
+                                            <span class="font-semibold">Video Tutorial</span>
+                                        </div>
+                                    </div>
+                                    <div class="aspect-video bg-black">
+                                        <?php
+                                        // Extract YouTube video ID from URL
+                                        $videoUrl = $product['instructions_video'];
+                                        $videoId = '';
+                                        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/', $videoUrl, $match)) {
+                                            $videoId = $match[1];
+                                        }
+                                        ?>
+                                        <?php if ($videoId): ?>
                                         <iframe 
-                                            class="absolute top-0 left-0 w-full h-full"
-                                            src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+                                            class="w-full h-full"
+                                            src="https://www.youtube.com/embed/<?php echo $videoId; ?>?rel=0&modestbranding=1"
+                                            frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen>
                                         </iframe>
+                                        <?php else: ?>
+                                        <iframe 
+                                            class="w-full h-full"
+                                            src="<?php echo htmlspecialchars($videoUrl); ?>"
+                                            frameborder="0"
+                                            allowfullscreen>
+                                        </iframe>
+                                        <?php endif; ?>
                                     </div>
-                                    <div class="p-4 bg-gray-800">
-                                        <h3 class="text-white font-semibold text-sm">How to Use Bowie-Dick Test Pack</h3>
-                                        <p class="text-gray-400 text-xs mt-1">Watch this tutorial for step-by-step guidance</p>
+                                    <div class="p-3 bg-white">
+                                        <a href="<?php echo htmlspecialchars($product['instructions_video']); ?>" 
+                                           target="_blank" 
+                                           class="text-sm text-red-600 hover:text-red-700 font-medium flex items-center justify-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                            </svg>
+                                            Watch in Full Screen
+                                        </a>
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
                 <!-- Features Tab -->
-                <div id="content-features" class="tab-content hidden">
+                <div id="content-features" class="tab-content" style="display: none;">
                     <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm">
                         <div class="flex items-center mb-6">
                             <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
@@ -282,21 +396,25 @@ echo getNavigation();
                             </div>
                             <h2 class="text-2xl font-bold text-gray-900">Key Features</h2>
                         </div>
+                        <?php if (!empty($product['features'])): ?>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <?php foreach ($product['features'] as $index => $feature): ?>
                             <div class="flex items-start text-gray-700 leading-relaxed p-5 bg-gradient-to-r from-green-50 to-transparent rounded-lg border border-green-100 hover:border-green-300 transition-all duration-300 transform hover:scale-105" style="animation-delay: <?php echo $index * 0.1; ?>s;">
                                 <svg class="w-6 h-6 text-green-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                 </svg>
-                                <span class="font-medium"><?php echo $feature; ?></span>
+                                <span class="font-medium"><?php echo htmlspecialchars($feature); ?></span>
                             </div>
                             <?php endforeach; ?>
                         </div>
+                        <?php else: ?>
+                        <p class="text-gray-600">No features listed for this product.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
 
                 <!-- Specifications Tab -->
-                <div id="content-specifications" class="tab-content hidden">
+                <div id="content-specifications" class="tab-content" style="display: none;">
                     <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
                         <div class="p-6 md:p-8 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                             <h2 class="text-2xl font-bold text-gray-900 flex items-center">
@@ -306,20 +424,32 @@ echo getNavigation();
                                 Technical Specifications
                             </h2>
                         </div>
+                        <?php if (!empty($product['specifications'])): ?>
                         <div class="overflow-x-auto">
                             <table class="w-full">
                                 <tbody class="divide-y divide-gray-200">
-                                    <?php foreach ($product['specifications'] as $index => $spec): ?>
+                                    <?php 
+                                    $index = 0;
+                                    foreach ($product['specifications'] as $label => $value): 
+                                    ?>
                                     <tr class="hover:bg-yellow-50 transition-colors duration-200" style="animation: fadeInUp 0.5s ease-out <?php echo $index * 0.05; ?>s both;">
                                         <td class="py-5 px-6 font-semibold text-gray-900 w-1/3 bg-gray-50">
-                                            <?php echo $spec['label']; ?>
+                                            <?php echo htmlspecialchars($label); ?>
                                         </td>
-                                        <td class="py-5 px-6 text-gray-700"><?php echo $spec['value']; ?></td>
+                                        <td class="py-5 px-6 text-gray-700"><?php echo htmlspecialchars($value); ?></td>
                                     </tr>
-                                    <?php endforeach; ?>
+                                    <?php 
+                                    $index++;
+                                    endforeach; 
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
+                        <?php else: ?>
+                        <div class="p-6">
+                            <p class="text-gray-600">No specifications available for this product.</p>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -327,20 +457,40 @@ echo getNavigation();
     </section>
 
     <!-- Video Player Section -->
+    <?php if (!empty($product['video_url'])): ?>
     <section class="relative overflow-hidden video-section-mobile parallax-section-mobile" style="height: 600px; margin: 40px 0; padding: 20px 0;">
         <!-- Full-width background video with fixed attachment -->
         <div class="absolute inset-0" style="clip-path: inset(0);">
             <div style="position: fixed; width: 100%; height: 100vh; top: 0; left: 0;">
+                <?php
+                // Extract YouTube video ID from URL
+                $videoUrl = $product['video_url'];
+                $videoId = '';
+                if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/', $videoUrl, $match)) {
+                    $videoId = $match[1];
+                }
+                ?>
+                <?php if ($videoId): ?>
                 <iframe 
                     id="productVideo"
                     style="width: 100%; height: 100%; border: none; object-fit: cover;"
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playlist=dQw4w9WgXcQ"
+                    src="https://www.youtube.com/embed/<?php echo $videoId; ?>?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playlist=<?php echo $videoId; ?>"
                     allow="autoplay; encrypted-media"
                     allowfullscreen>
                 </iframe>
+                <?php else: ?>
+                <iframe 
+                    id="productVideo"
+                    style="width: 100%; height: 100%; border: none; object-fit: cover;"
+                    src="<?php echo htmlspecialchars($videoUrl); ?>"
+                    allow="autoplay; encrypted-media"
+                    allowfullscreen>
+                </iframe>
+                <?php endif; ?>
             </div>
         </div>
     </section>
+    <?php endif; ?>
 
     <!-- Reviews and Inquiry Section -->
     <section class="bg-white py-12">
@@ -355,17 +505,18 @@ echo getNavigation();
                         </div>
                     </div>
                     
+                    <?php if (!empty($reviews)): ?>
                     <!-- First Row - Scrolls Left to Right -->
                     <div id="reviewsSlider1" class="reviews-slider pb-4 mb-6">
                         <?php foreach ($reviewsRow1 as $review): ?>
                         <div class="review-card flex-shrink-0 w-80 md:w-96 bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                             <div class="flex items-center mb-4">
                                 <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">
-                                    <?php echo substr($review['name'], 0, 1); ?>
+                                    <?php echo strtoupper(substr($review['customer_name'], 0, 1)); ?>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900"><?php echo $review['name']; ?></h4>
-                                    <p class="text-sm text-gray-600"><?php echo $review['role']; ?></p>
+                                    <h4 class="font-semibold text-gray-900"><?php echo htmlspecialchars($review['customer_name']); ?></h4>
+                                    <p class="text-sm text-gray-600"><?php echo htmlspecialchars($review['customer_role']); ?></p>
                                 </div>
                             </div>
                             <div class="star-rating mb-3">
@@ -373,22 +524,23 @@ echo getNavigation();
                                 <span class="star">★</span>
                                 <?php endfor; ?>
                             </div>
-                            <p class="text-gray-700 leading-relaxed italic">"<?php echo $review['comment']; ?>"</p>
+                            <p class="text-gray-700 leading-relaxed italic">"<?php echo htmlspecialchars($review['comment']); ?>"</p>
                         </div>
                         <?php endforeach; ?>
                     </div>
 
                     <!-- Second Row - Scrolls Right to Left -->
+                    <?php if (!empty($reviewsRow2)): ?>
                     <div id="reviewsSlider2" class="reviews-slider-reverse pb-4">
                         <?php foreach ($reviewsRow2 as $review): ?>
                         <div class="review-card flex-shrink-0 w-80 md:w-96 bg-gradient-to-br from-yellow-50 to-white p-6 rounded-2xl border border-yellow-200 shadow-sm">
                             <div class="flex items-center mb-4">
                                 <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">
-                                    <?php echo substr($review['name'], 0, 1); ?>
+                                    <?php echo strtoupper(substr($review['customer_name'], 0, 1)); ?>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900"><?php echo $review['name']; ?></h4>
-                                    <p class="text-sm text-gray-600"><?php echo $review['role']; ?></p>
+                                    <h4 class="font-semibold text-gray-900"><?php echo htmlspecialchars($review['customer_name']); ?></h4>
+                                    <p class="text-sm text-gray-600"><?php echo htmlspecialchars($review['customer_role']); ?></p>
                                 </div>
                             </div>
                             <div class="star-rating mb-3">
@@ -396,10 +548,20 @@ echo getNavigation();
                                 <span class="star">★</span>
                                 <?php endfor; ?>
                             </div>
-                            <p class="text-gray-700 leading-relaxed italic">"<?php echo $review['comment']; ?>"</p>
+                            <p class="text-gray-700 leading-relaxed italic">"<?php echo htmlspecialchars($review['comment']); ?>"</p>
                         </div>
                         <?php endforeach; ?>
                     </div>
+                    <?php endif; ?>
+                    
+                    <?php else: ?>
+                    <div class="bg-gray-50 rounded-xl p-8 text-center">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                        </svg>
+                        <p class="text-gray-600">No reviews available yet. Be the first to share your experience!</p>
+                    </div>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Right: Quick Inquiry Form (1/3 width) -->
@@ -416,7 +578,7 @@ echo getNavigation();
                         </div>
 
                         <form id="quickInquiryForm" class="space-y-4">
-                            <input type="hidden" name="product_name" value="<?php echo $product['name']; ?>">
+                            <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['name']); ?>">
                             
                             <div>
                                 <input type="text" 
@@ -466,6 +628,75 @@ echo getNavigation();
 </main>
 
 <script src="assets/js/product-details.js"></script>
+
+<script>
+// Change main product image when clicking thumbnails
+function changeMainImage(imageSrc) {
+    const mainImage = document.getElementById('mainProductImage');
+    if (mainImage) {
+        mainImage.style.opacity = '0';
+        setTimeout(() => {
+            mainImage.src = imageSrc;
+            mainImage.style.opacity = '1';
+        }, 150);
+    }
+}
+
+// Smooth scroll to inquiry form
+function scrollToInquiry() {
+    const inquiryForm = document.getElementById('inquiryForm');
+    if (inquiryForm) {
+        inquiryForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Add pulse highlight effect
+        inquiryForm.querySelector('.bg-gradient-to-br').classList.add('pulse-highlight');
+        setTimeout(() => {
+            inquiryForm.querySelector('.bg-gradient-to-br').classList.remove('pulse-highlight');
+        }, 2000);
+    }
+}
+
+// Handle inquiry form submission
+document.getElementById('quickInquiryForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-2 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Sending...';
+    
+    try {
+        const formData = new FormData(this);
+        
+        // Add source tracking
+        formData.append('source_page', 'product-details');
+        formData.append('source_url', window.location.href);
+        formData.append('subject', 'Product Inquiry - ' + formData.get('product_name'));
+        
+        const response = await fetch('api/submit-inquiry.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Redirect to thank you page
+            window.location.href = 'thank-you.php?type=inquiry';
+        } else {
+            alert(result.message || 'Failed to submit inquiry. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
+    } catch (error) {
+        console.error('Error submitting inquiry:', error);
+        alert('An error occurred. Please try again later.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    }
+});
+</script>
 
 <?php
 // Output the footer

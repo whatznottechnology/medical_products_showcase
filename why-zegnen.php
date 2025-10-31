@@ -1,24 +1,33 @@
 <?php
+require_once 'config/Database.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/footer.php';
+
+// Fetch banner from banners table
+$db = Database::getInstance();
+$banner = $db->fetchOne("SELECT * FROM banners WHERE page = 'why-zegnen' AND status = 'active' LIMIT 1");
+$bannerImage = !empty($banner['image_path']) ? $banner['image_path'] : '';
+$bannerTitle = !empty($banner['title']) ? $banner['title'] : 'Why Choose ZEGNEN?';
 
 // Output the header and navigation
 echo getHeader(
     'Why Choose ZEGNEN - Leading CSSD Solutions Provider | Quality & Innovation',
     'Discover why leading healthcare facilities choose ZEGNEN: ISO 13485 certified quality, CE marked products, 24/7 expert support, advanced sterilization monitoring, eco-friendly solutions, comprehensive training programs. Uncompromising quality standards for patient safety.',
-    'why choose ZEGNEN, CSSD excellence, sterilization quality, ISO certified CSSD, CE marked sterilization, healthcare quality standards, infection control excellence, sterilization innovation, medical device quality, CSSD training, patient safety, sterilization compliance'
+    'why choose ZEGNEN, CSSD excellence, sterilization quality, ISO certified CSSD, CE marked sterilization, healthcare quality standards, infection control excellence, sterilization innovation, medical device quality, CSSD training, patient safety, sterilization compliance',
+    'why-zegnen'
 );
 echo getNavigation();
 ?>
 
 <main class="relative">
-    <!-- Hero Section with Forest Background -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80')] bg-cover bg-center bg-fixed">
+    <!-- Hero Section with Dynamic Banner -->
+    <?php if (!empty($bannerImage)): ?>
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[url('<?php echo htmlspecialchars($bannerImage); ?>')] bg-cover bg-center bg-fixed">
         <div class="absolute inset-0 bg-black/50"></div>
         <div class="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 transform transition-all duration-700 translate-y-20 opacity-0" data-scroll="fadeUp" style="font-family: 'Inter', sans-serif;">
-                Why Choose ZEGNEN?
+                <?php echo htmlspecialchars($bannerTitle); ?>
             </h1>
             <p class="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-8 sm:mb-10 lg:mb-12 transform transition-all duration-700 delay-300 translate-y-20 opacity-0" data-scroll="fadeUp" style="font-family: 'Inter', sans-serif;">
                 Setting the standard in CSSD excellence through innovation,
@@ -34,6 +43,27 @@ echo getNavigation();
             </div>
         </div>
     </section>
+    <?php else: ?>
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-yellow-500 via-yellow-600 to-yellow-700">
+        <div class="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 transform transition-all duration-700 translate-y-20 opacity-0" data-scroll="fadeUp" style="font-family: 'Inter', sans-serif;">
+                <?php echo htmlspecialchars($bannerTitle); ?>
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-8 sm:mb-10 lg:mb-12 transform transition-all duration-700 delay-300 translate-y-20 opacity-0" data-scroll="fadeUp" style="font-family: 'Inter', sans-serif;">
+                Setting the standard in CSSD excellence through innovation,
+                quality, and unwavering commitment to patient safety
+            </p>
+            <div class="transform transition-all duration-700 delay-500 translate-y-20 opacity-0" data-scroll="fadeUp">
+                <a href="#explore" class="inline-flex items-center space-x-2 sm:space-x-3 text-sm sm:text-base lg:text-lg group border-2 border-white rounded-full px-6 sm:px-8 py-2.5 sm:py-3 hover:bg-white hover:text-gray-900 transition-all duration-300" style="font-family: 'Inter', sans-serif;">
+                    <span>Explore Our Excellence</span>
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <!-- Quality Standards Section -->
     <section id="explore" class="relative py-12 sm:py-16 lg:py-24 bg-white">
@@ -103,7 +133,7 @@ echo getNavigation();
                             </div>
                             <div class="order-1 lg:order-2 transform transition-all duration-700 translate-x-0 lg:translate-x-[100px] opacity-0" data-scroll="slideLeft">
                                 <div class="rounded-xl overflow-hidden shadow-lg">
-                                    <img src="https://images.unsplash.com/photo-1581093458791-8a1462c5af0c?auto=format&fit=crop&w=1600&q=80" 
+                                    <img src="assets/images/why1.jpg" 
                                          alt="Sterilization Innovation" class="w-full h-48 sm:h-56 lg:h-64 object-cover">
                                 </div>
                             </div>
@@ -118,7 +148,7 @@ echo getNavigation();
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-16 items-center">
                             <div class="order-1 transform transition-all duration-700 translate-x-0 lg:translate-x-[-100px] opacity-0" data-scroll="slideRight">
                                 <div class="rounded-xl overflow-hidden shadow-lg">
-                                    <img src="https://images.unsplash.com/photo-1579154204845-5d37f57827b3?auto=format&fit=crop&w=1600&q=80" 
+                                    <img src="assets/images/why2.jpg" 
                                          alt="Eco-friendly Solutions" class="w-full h-48 sm:h-56 lg:h-64 object-cover">
                                 </div>
                             </div>
@@ -205,7 +235,7 @@ echo getNavigation();
                 Join leading healthcare institutions that trust ZEGNEN for their critical sterilization needs.
             </p>
             <div class="transform transition-all duration-700 delay-500 translate-y-20 opacity-0" data-scroll="fadeUp">
-                <a href="mailto:info@zegnen.com" class="inline-flex items-center bg-yellow-500 text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-sm sm:text-base font-medium transition-all duration-300 hover:bg-yellow-600 hover:scale-105" style="font-family: 'Inter', sans-serif;">
+                <a href="contact-us" class="inline-flex items-center bg-yellow-500 text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-sm sm:text-base font-medium transition-all duration-300 hover:bg-yellow-600 hover:scale-105" style="font-family: 'Inter', sans-serif;">
                     <span>Schedule a Consultation</span>
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

@@ -1,0 +1,16 @@
+RewriteEngine On
+RewriteBase /p/admin/
+
+# Redirect to login if not authenticated
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/p/admin/login\.php
+RewriteCond %{REQUEST_URI} !^/p/admin/assets/
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

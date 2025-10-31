@@ -1,4 +1,5 @@
 <?php
+require_once 'config/production.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/hero.php';
@@ -16,7 +17,8 @@ require_once 'components/footer.php';
 echo getHeader(
     "ZEGNEN - Leading CSSD Products Manufacturer | Sterilization & Infection Control",
     "ZEGNEN International Company - Leading manufacturer of CSSD products for sterilization & infection control. ISO certified medical devices, autoclave tape, bowie dick test, and sterilization indicators for healthcare facilities worldwide.",
-    "CSSD products, sterilization, infection control, healthcare, medical devices, autoclave tape, bowie dick test, sterilization indicators, chemical indicators, biological indicators, medical sterilization, hospital hygiene, ISO 13485, CE marked products"
+    "CSSD products, sterilization, infection control, healthcare, medical devices, autoclave tape, bowie dick test, sterilization indicators, chemical indicators, biological indicators, medical sterilization, hospital hygiene, ISO 13485, CE marked products",
+    "home"
 );
 
 // Output the navigation

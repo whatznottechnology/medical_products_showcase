@@ -1,5 +1,7 @@
 RewriteEngine On
 
+ErrorDocument 404 /p/404.php
+
 # Hide .php extensions
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
@@ -24,7 +26,7 @@ RewriteRule ^$ index.php [L]
 </FilesMatch>
 
 # Prevent access to sensitive files
-<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak)$">
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|env)$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>

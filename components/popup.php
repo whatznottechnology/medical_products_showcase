@@ -1,5 +1,19 @@
 <?php
 function getLeadPopup() {
+    require_once __DIR__ . '/../config/Database.php';
+    
+    // Fetch active popup
+    $db = Database::getInstance();
+    $popup = $db->fetchOne("SELECT * FROM popup WHERE is_enabled = 1 ORDER BY id DESC LIMIT 1");
+    
+    // If no popup, return empty
+    if (!$popup) {
+        return '';
+    }
+    
+    // Use correct path without admin/ prefix
+    $imagePath = !empty($popup['image_path']) ? $popup['image_path'] : '';
+    
     ob_start();
 ?>
 <!-- Lead Capture Popup -->
@@ -13,11 +27,11 @@ function getLeadPopup() {
                 </svg>
             </button>
 
-            <!-- Content -->
-            <div class="p-6">
+            <!-- Form Content -->
+            <div id="popupFormContent" class="p-6">
                 <!-- Product Image - Extra Large Banner Style -->
                 <div class="flex justify-center mb-8">
-                    <img src="assets/images/Bowie-Dick test.png" alt="CSSD Products" class="w-full h-80 object-contain rounded-xl shadow-lg bg-gradient-to-r from-yellow-50 to-yellow-100 p-4 border border-yellow-200">
+                    <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="<?php echo htmlspecialchars($popup['alt_text'] ?? 'Popup'); ?>" class="w-full h-80 object-contain rounded-xl shadow-lg bg-gradient-to-r from-yellow-50 to-yellow-100 p-4 border border-yellow-200">
                 </div>
 
                 <!-- Form -->
@@ -52,9 +66,84 @@ function getLeadPopup() {
                     We respect your privacy. No spam, only relevant updates.
                 </p>
             </div>
+
+            <!-- Thank You Message (Hidden by default) -->
+            <div id="popupThankYou" class="p-6 hidden">
+                <div class="text-center py-12">
+                    <!-- Success Icon -->
+                    <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+                        <svg class="h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    
+                    <!-- Thank You Text -->
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Thank You!</h3>
+                    <p class="text-gray-600 mb-2">Your request has been submitted successfully.</p>
+                    <p class="text-sm text-gray-500">Our team will contact you shortly.</p>
+                    
+                    <!-- Auto-close indicator -->
+                    <p class="text-xs text-gray-400 mt-6">This window will close automatically...</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const leadForm = document.getElementById('leadForm');
+    const popupFormContent = document.getElementById('popupFormContent');
+    const popupThankYou = document.getElementById('popupThankYou');
+    const leadPopup = document.getElementById('leadPopup');
+
+    if (leadForm) {
+        leadForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(leadForm);
+            formData.append('source_page', 'popup');
+            formData.append('source_url', window.location.href);
+
+            try {
+                const response = await fetch('api/submit-lead.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Hide form, show thank you message
+                    popupFormContent.classList.add('hidden');
+                    popupThankYou.classList.remove('hidden');
+
+                    // Auto-close after 3 seconds
+                    setTimeout(() => {
+                        if (window.closeLeadPopup) {
+                            window.closeLeadPopup();
+                        } else {
+                            leadPopup.classList.add('hidden');
+                        }
+                        
+                        // Reset for next time
+                        setTimeout(() => {
+                            popupFormContent.classList.remove('hidden');
+                            popupThankYou.classList.add('hidden');
+                            leadForm.reset();
+                        }, 500);
+                    }, 3000);
+                } else {
+                    alert(result.message || 'Something went wrong. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    }
+});
+</script>
 <?php
     return ob_get_clean();
 }

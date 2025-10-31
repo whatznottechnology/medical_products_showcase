@@ -1,23 +1,32 @@
 <?php
+require_once 'config/Database.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/footer.php';
+
+// Fetch banner from banners table
+$db = Database::getInstance();
+$banner = $db->fetchOne("SELECT * FROM banners WHERE page = 'about' AND status = 'active' LIMIT 1");
+$bannerImage = !empty($banner['image_path']) ? $banner['image_path'] : '';
+$bannerTitle = !empty($banner['title']) ? $banner['title'] : 'About ZEGNEN International Company';
 
 // Output the header and navigation
 echo getHeader(
     'About Us - ZEGNEN International Company | CSSD Solutions Provider',
     'Learn about ZEGNEN International Company - A global leader in CSSD products manufacturing. ISO 13485 certified, CE marked products. Delivering sterilization packaging, monitoring solutions, instrument care & infection control products to healthcare facilities worldwide.',
-    'about ZEGNEN, CSSD manufacturer, sterilization company, medical device manufacturer, ISO 13485, CE certification, healthcare solutions, infection control company, sterilization packaging manufacturer, CSSD solutions provider'
+    'about ZEGNEN, CSSD manufacturer, sterilization company, medical device manufacturer, ISO 13485, CE certification, healthcare solutions, infection control company, sterilization packaging manufacturer, CSSD solutions provider',
+    'about'
 );
 echo getNavigation();
 
 ?>
 
 <main class="relative z-10 mt-16">
-    <!-- Intro Parallax -->
-    <section class="parallax parallax-1 hero-overlay flex items-center" style="min-height:60vh;">
+    <!-- Intro Parallax - Dynamic Banner -->
+    <?php if (!empty($bannerImage)): ?>
+    <section class="parallax hero-overlay flex items-center" style="min-height:60vh; background-image: url('<?php echo htmlspecialchars($bannerImage); ?>'); background-size: cover; background-position: center; background-attachment: fixed;">
         <div class="max-w-6xl mx-auto px-6 lg:px-12 py-24 text-white">
-            <h2 class="text-4xl lg:text-5xl font-semibold mb-4">About ZEGNEN International Company</h2>
+            <h2 class="text-4xl lg:text-5xl font-semibold mb-4"><?php echo htmlspecialchars($bannerTitle); ?></h2>
             <p class="text-lg lg:text-xl max-w-3xl leading-relaxed">
                 ZEGNEN INTERNATIONAL COMPANY is a global manufacturer and supplier of Central Sterile Supply Department (CSSD)
                 products. We design and deliver sterilization packaging, monitoring solutions, instrument care, accessories,
@@ -26,6 +35,19 @@ echo getNavigation();
             </p>
         </div>
     </section>
+    <?php else: ?>
+    <section class="flex items-center bg-gradient-to-r from-yellow-500 to-yellow-600" style="min-height:60vh;">
+        <div class="max-w-6xl mx-auto px-6 lg:px-12 py-24 text-white">
+            <h2 class="text-4xl lg:text-5xl font-semibold mb-4"><?php echo htmlspecialchars($bannerTitle); ?></h2>
+            <p class="text-lg lg:text-xl max-w-3xl leading-relaxed">
+                ZEGNEN INTERNATIONAL COMPANY is a global manufacturer and supplier of Central Sterile Supply Department (CSSD)
+                products. We design and deliver sterilization packaging, monitoring solutions, instrument care, accessories,
+                and personal protection equipment that meet international standards and help healthcare providers maintain
+                the highest levels of patient safety and infection control.
+            </p>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <!-- Mission & Values -->
     <section class="bg-white py-16 px-6 lg:px-12">
@@ -45,10 +67,9 @@ echo getNavigation();
             </div>
 
             <div class="reveal">
-                <div class="shadow-xl rounded-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1581093458791-8a1462c5af0c?auto=format&fit=crop&w=1600&q=80" alt="Modern CSSD facility"
+                <div class="rounded-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
+                    <img src="assets/images/zicabout.png" alt="Modern CSSD facility"
                          class="w-full object-cover h-80">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 </div>
             </div>
         </div>
@@ -134,7 +155,7 @@ echo getNavigation();
                 <h4 class="text-3xl font-semibold mb-4 reveal">Ready to improve your sterilization workflow?</h4>
                 <p class="text-gray-600 text-lg mb-8 reveal">Contact our sales team to discuss solutions tailored to your facility.</p>
                 <div class="reveal">
-                    <a href="mailto:info@zegnen.com" class="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg group">
+                    <a href="contact-us" class="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg group">
                         <span>Contact Sales</span>
                         <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

@@ -1,5 +1,16 @@
 <?php
 function getBrandPartnersSection() {
+    require_once __DIR__ . '/../config/Database.php';
+    
+    // Fetch active brands
+    $db = Database::getInstance();
+    $brands = $db->fetchAll("SELECT * FROM brands WHERE status = 'active' ORDER BY created_at DESC");
+    
+    // If no brands, return empty
+    if (empty($brands)) {
+        return '';
+    }
+    
     ob_start();
 ?>
 <!-- Brand Partners Section -->
@@ -18,22 +29,20 @@ function getBrandPartnersSection() {
         <div class="brand-slider-container">
             <div class="brand-slider">
                 <?php
-                $brands = [
-                    ['name' => 'Fortis Healthcare', 'logo' => 'https://logos-world.net/wp-content/uploads/2022/01/Fortis-Healthcare-Logo.png'],
-                    ['name' => 'Apollo Hospitals', 'logo' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyJG9zl7Xy3tl8w6Lj8pHx9u6oLpNpOI_8VA&s'],
-                    ['name' => 'Max Healthcare', 'logo' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfmLnAi9I5KrN9HvjKhY8Xs2IqvYpGqJ5r9w&s'],
-                    ['name' => 'Manipal Hospitals', 'logo' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxF5cY8B9gKo2B7wL4qjGzJ9u4XhvR5t9A8w&s'],
-                    ['name' => 'Medanta', 'logo' => 'https://www.medanta.org/storage/2022/06/medanta-logo.png'],
-                    ['name' => 'AIIMS', 'logo' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5KJ8wD2rN7xK9lL0Hj8Z9tQ6JgO5vR2P1wQ&s']
-                ];
-
                 // Output brands twice for infinite scroll effect
                 for ($i = 0; $i < 2; $i++) {
                     foreach ($brands as $brand) {
+                        // Logo path already includes uploads/brands/ prefix
+                        $logoPath = str_replace('//', '/', $brand['logo_path']);
                         echo '<div class="brand-item">
                                 <div class="brand-logo">
-                                    <img src="' . $brand['logo'] . '" 
-                                         alt="' . $brand['name'] . '" class="brand-image">
+                                    <img src="' . htmlspecialchars($logoPath) . '" 
+                                         alt="' . htmlspecialchars($brand['name']) . '" 
+                                         class="brand-image"
+                                         onerror="this.parentElement.parentElement.style.display=\'none\'">
+                                </div>
+                                <div class="brand-name">
+                                    ' . htmlspecialchars($brand['name']) . '
                                 </div>
                             </div>';
                     }

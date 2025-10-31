@@ -2,7 +2,7 @@
 function switchTab(tabName) {
     // Hide all tab contents
     document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.add('hidden');
+        content.style.display = 'none';
     });
     
     // Remove active state from all buttons
@@ -12,12 +12,17 @@ function switchTab(tabName) {
     });
     
     // Show selected tab content
-    document.getElementById('content-' + tabName).classList.remove('hidden');
+    const selectedContent = document.getElementById('content-' + tabName);
+    if (selectedContent) {
+        selectedContent.style.display = 'block';
+    }
     
     // Add active state to selected button
     const activeButton = document.getElementById('tab-' + tabName);
-    activeButton.classList.remove('border-transparent', 'text-gray-500');
-    activeButton.classList.add('border-yellow-500', 'text-yellow-600');
+    if (activeButton) {
+        activeButton.classList.remove('border-transparent', 'text-gray-500');
+        activeButton.classList.add('border-yellow-500', 'text-yellow-600');
+    }
 }
 
 // Reviews slider function - Updated for two rows

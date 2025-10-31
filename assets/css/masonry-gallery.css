@@ -1,169 +1,175 @@
-/* Masonry Gallery - Smart Auto-Adjusting Layout with CSS Grid */
+﻿/* Masonry Gallery - Responsive Column Layout with Auto-Scroll */
 .masonry-gallery-section {
-    width: 100%;
-    min-height: 100vh;
-    padding: 3rem 0;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
     overflow: hidden;
 }
 
 .gallery-container {
-    width: 95%;
-    max-width: 1800px;
-    height: 85vh;
-    min-height: 600px;
+    width: 100%;
     overflow: hidden;
     position: relative;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    padding: 20px;
 }
 
-/* Masonry Grid Track - Auto-scrolling horizontally */
 .masonry-track {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 280px);
-    grid-template-rows: repeat(3, 1fr);
-    grid-auto-flow: column;
-    gap: 16px;
-    height: 100%;
+    display: flex;
+    gap: 20px;
+    padding: 20px 0;
+    animation: scrollLeft 30s linear infinite;
     width: max-content;
-    animation: scrollLeft 60s linear infinite;
-    will-change: transform;
 }
 
-/* Masonry Cards - Auto-adjust based on image type */
+.masonry-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 450px;
+}
+
+.masonry-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.masonry-row.row-3 {
+    justify-content: space-between;
+}
+
+.masonry-row.row-2 {
+    justify-content: space-evenly;
+}
+
 .masonry-card {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    transition: all 0.4s ease;
     background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
     position: relative;
+    flex-shrink: 0;
 }
 
 .masonry-card:hover {
-    transform: scale(1.05) translateY(-8px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
     z-index: 10;
 }
 
-/* Portrait Images - Span 2 rows (tall) */
-.masonry-card.portrait {
-    grid-row: span 2;
-    grid-column: span 1;
+/* Row 1: 3 equal images */
+.row-3 .masonry-card {
+    width: 140px;
+    height: 220px;
 }
 
-/* Landscape Images - Span 1 row, wider */
-.masonry-card.landscape {
-    grid-row: span 1;
-    grid-column: span 1;
+/* Row 2: 2 wider images */
+.row-2 .masonry-card {
+    width: 210px;
+    height: 180px;
 }
 
-/* Square Images - Span 1 row */
-.masonry-card.square {
-    grid-row: span 1;
-    grid-column: span 1;
-}
-
-/* Image Styling */
 .masonry-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s ease;
 }
 
 .masonry-card:hover .masonry-img {
     transform: scale(1.1);
 }
 
-/* Infinite Scroll Animation - Right to Left */
 @keyframes scrollLeft {
-    from {
+    0% {
         transform: translateX(0);
     }
-    to {
-        transform: translateX(-33.33%);
+    100% {
+        transform: translateX(-20%);
     }
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .gallery-container {
-        width: 98%;
-        height: 80vh;
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+    .masonry-column {
+        min-width: 380px;
+        gap: 15px;
+    }
+    
+    .masonry-row {
+        gap: 12px;
+    }
+    
+    .row-3 .masonry-card {
+        width: 120px;
+        height: 190px;
+    }
+    
+    .row-2 .masonry-card {
+        width: 180px;
+        height: 150px;
     }
     
     .masonry-track {
-        grid-template-columns: repeat(auto-fill, 240px);
-        gap: 14px;
+        gap: 15px;
+        animation-duration: 25s;
     }
 }
 
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .masonry-gallery-section {
-        padding: 1.5rem 0;
-        min-height: auto;
+        padding: 40px 0;
     }
     
-    .gallery-container {
-        height: 65vh;
-        min-height: 450px;
-        border-radius: 16px;
-        padding: 12px;
+    .masonry-column {
+        min-width: 320px;
+        gap: 12px;
+    }
+    
+    .masonry-row {
+        gap: 10px;
+    }
+    
+    .row-3 .masonry-card {
+        width: 100px;
+        height: 160px;
+    }
+    
+    .row-2 .masonry-card {
+        width: 150px;
+        height: 130px;
     }
     
     .masonry-track {
-        grid-template-columns: repeat(auto-fill, 180px);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 10px;
-        animation-duration: 50s;
-    }
-    
-    /* On mobile, portrait images span full height */
-    .masonry-card.portrait {
-        grid-row: span 2;
-    }
-    
-    .masonry-card.landscape,
-    .masonry-card.square {
-        grid-row: span 1;
-    }
-    
-    /* Reduce hover effect on mobile */
-    .masonry-card:hover {
-        transform: scale(1.02) translateY(-4px);
+        gap: 12px;
+        animation-duration: 20s;
     }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
-    .masonry-gallery-section {
-        padding: 1rem 0;
+    .masonry-column {
+        min-width: 280px;
+        gap: 10px;
     }
     
-    .gallery-container {
-        height: 55vh;
-        min-height: 350px;
-        border-radius: 12px;
-        padding: 10px;
-        width: 98%;
+    .masonry-row {
+        gap: 8px;
+    }
+    
+    .row-3 .masonry-card {
+        width: 88px;
+        height: 140px;
+    }
+    
+    .row-2 .masonry-card {
+        width: 132px;
+        height: 110px;
     }
     
     .masonry-track {
-        grid-template-columns: repeat(auto-fill, 140px);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 8px;
-        animation-duration: 40s;
-    }
-    
-    /* Further reduce hover effect on small mobile */
-    .masonry-card:hover {
-        transform: scale(1.01) translateY(-2px);
+        gap: 10px;
+        animation-duration: 15s;
     }
 }

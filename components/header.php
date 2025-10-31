@@ -1,5 +1,23 @@
 <?php
-function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN", $description = "ZEGNEN - Leading manufacturer of CSSD products for sterilization & infection control in healthcare institutions worldwide", $keywords = "CSSD products, sterilization, infection control, healthcare, medical devices, autoclave tape, bowie dick test, sterilization indicators") {
+function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN", $description = "ZEGNEN - Leading manufacturer of CSSD products for sterilization & infection control in healthcare institutions worldwide", $keywords = "CSSD products, sterilization, infection control, healthcare, medical devices, autoclave tape, bowie dick test, sterilization indicators", $page = "home") {
+    // Fetch banner from banners table based on page
+    $banner = null;
+    $heroBackground = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80';
+    
+    try {
+        require_once __DIR__ . '/../config/Database.php';
+        $db = Database::getInstance();
+        $banner = $db->fetchOne("SELECT image_path FROM banners WHERE page = ? AND status = 'active' ORDER BY created_at DESC LIMIT 1", [$page]);
+        
+        // Use relative path (no leading slash) since site is in subdirectory
+        if (!empty($banner['image_path'])) {
+            $heroBackground = $banner['image_path'];
+        }
+    } catch (Exception $e) {
+        // Fallback to default background if database error
+        error_log("Header banner fetch error: " . $e->getMessage());
+    }
+    
     ob_start();
 ?>
 <!DOCTYPE html>
@@ -36,11 +54,11 @@ function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN", 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="assets/js/tailwind-config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/header.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="assets/css/mobile-optimizations.css">
     <link rel="stylesheet" href="assets/css/popup.css">
 </head>
-<body class="overflow-x-hidden hero-background">
+<body class="overflow-x-hidden">
 <?php
     return ob_get_clean();
 }

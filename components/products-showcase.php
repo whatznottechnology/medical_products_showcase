@@ -48,59 +48,54 @@ function getProductsShowcase() {
             <div class="overflow-x-auto sm:overflow-hidden px-0 sm:px-12 lg:px-0 scrollbar-hide">
                 <div id="productSlider" class="flex transition-transform duration-300 ease-in-out gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                     <?php
-                    $products = [
-                        [
-                            'name' => 'Bowie-Dick Test',
-                            'description' => 'Premium quality air removal test for steam sterilization validation',
-                            'price_min' => '2,450',
-                            'price_max' => '3,500',
-                            'unit' => 'pack',
-                            'image' => 'assets/images/Bowie-Dick test.png',
-                            'badge' => 'ISO Certified'
-                        ],
-                        [
-                            'name' => 'ZIC Autoclave Tape',
-                            'description' => 'High-quality steam sterilization indicator tape for medical instruments',
-                            'price_min' => '1,200',
-                            'price_max' => '1,800',
-                            'unit' => 'roll',
-                            'image' => 'assets/images/ZIC_Autoclave_Tape.png',
-                            'badge' => 'FDA Approved'
-                        ],
-                        [
-                            'name' => 'Type 6 Emulating Indicator',
-                            'description' => 'Advanced chemical indicator for sterilization process monitoring',
-                            'price_min' => '3,200',
-                            'price_max' => '4,500',
-                            'unit' => 'box',
-                            'image' => 'assets/images/ZIC Type_6 –Emulating_Indicator.png',
-                            'badge' => 'CE Marked'
-                        ],
-                    ];
+                    // Fetch products from database
+                    require_once __DIR__ . '/../config/Database.php';
+                    $db = Database::getInstance();
+                    $products = $db->fetchAll("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC LIMIT 6");
 
                     foreach ($products as $product):
+                        // Clean image path (remove double slashes)
+                        $mainImage = !empty($product['main_image']) ? str_replace('//', '/', $product['main_image']) : 'assets/images/placeholder.png';
+                        $badge = !empty($product['badge']) ? $product['badge'] : 'ISO Certified';
                     ?>
-                    <a href="product-details" class="flex-shrink-0 w-72 sm:w-80 lg:w-96 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl hover:border-yellow-200 transition-all duration-300 group block">
+                    <a href="product-details.php?id=<?php echo $product['id']; ?>" class="flex-shrink-0 w-72 sm:w-80 lg:w-96 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl hover:border-yellow-200 transition-all duration-300 group block">
                         <div class="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative p-4 sm:p-6 overflow-hidden">
-                            <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110">
+                            <img src="<?php echo htmlspecialchars($mainImage); ?>" 
+                                 alt="<?php echo htmlspecialchars($product['name']); ?>" 
+                                 class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
+                                 onerror="this.src='assets/images/placeholder.png'">
                             <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-yellow-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-md">
-                                <?php echo $product['badge']; ?>
+                                <?php echo htmlspecialchars($badge); ?>
                             </div>
                         </div>
                         <div class="p-4 sm:p-6 lg:p-8">
-                            <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-2 sm:mb-3 group-hover:text-yellow-600 transition-colors duration-300"><?php echo $product['name']; ?></h3>
-                            <p class="text-gray-600 text-xs sm:text-sm lg:text-base mb-3 sm:mb-4 lg:mb-6 line-clamp-2"><?php echo $product['description']; ?></p>
+                            <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-2 sm:mb-3 group-hover:text-yellow-600 transition-colors duration-300"><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <?php if (!empty($product['subtitle'])): ?>
+                            <p class="text-gray-600 text-xs sm:text-sm lg:text-base mb-3 sm:mb-4 lg:mb-6 line-clamp-2"><?php echo htmlspecialchars($product['subtitle']); ?></p>
+                            <?php endif; ?>
                             
                             <!-- Price Range -->
+                            <?php if (!empty($product['price_min']) || !empty($product['price_max'])): ?>
                             <div class="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200">
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Price Range</p>
-                                        <p class="text-base sm:text-lg lg:text-xl font-bold text-yellow-600">₹<?php echo $product['price_min']; ?> - ₹<?php echo $product['price_max']; ?></p>
+                                        <p class="text-base sm:text-lg lg:text-xl font-bold text-yellow-600">
+                                            <?php if ($product['price_min'] && $product['price_max']): ?>
+                                                ₹<?php echo number_format($product['price_min'], 0); ?> - ₹<?php echo number_format($product['price_max'], 0); ?>
+                                            <?php elseif ($product['price_min']): ?>
+                                                From ₹<?php echo number_format($product['price_min'], 0); ?>
+                                            <?php else: ?>
+                                                Contact for Price
+                                            <?php endif; ?>
+                                        </p>
                                     </div>
-                                    <span class="text-xs text-gray-500">per <?php echo $product['unit']; ?></span>
+                                    <?php if (!empty($product['price_unit'])): ?>
+                                    <span class="text-xs text-gray-500">per <?php echo htmlspecialchars($product['price_unit']); ?></span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
+                            <?php endif; ?>
                             
                             <!-- View Details Button -->
                             <div class="w-full bg-yellow-500 group-hover:bg-yellow-600 text-white font-semibold text-center py-2.5 sm:py-3 rounded-lg transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-md text-sm sm:text-base">

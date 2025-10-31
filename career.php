@@ -85,25 +85,19 @@ echo getNavigation();
                         </p>
                     </div>
 
-                    <form action="#" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <form id="careerForm" method="POST" enctype="multipart/form-data" class="space-y-6">
                         <!-- Personal Information -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" required
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                                <input type="text" id="name" name="name" required
                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors">
                             </div>
                             <div>
-                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                <input type="email" id="email" name="email" required
                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors">
                             </div>
-                        </div>
-
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                            <input type="email" id="email" name="email" required
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors">
                         </div>
 
                         <div>
@@ -162,8 +156,8 @@ echo getNavigation();
 
                         <!-- Cover Letter -->
                         <div>
-                            <label for="coverLetter" class="block text-sm font-medium text-gray-700 mb-2">Cover Letter (Optional)</label>
-                            <textarea id="coverLetter" name="coverLetter" rows="4"
+                            <label for="cover_letter" class="block text-sm font-medium text-gray-700 mb-2">Cover Letter (Optional)</label>
+                            <textarea id="cover_letter" name="cover_letter" rows="4"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors"
                                       placeholder="Tell us why you're interested in joining ZEGNEN..."></textarea>
                         </div>
@@ -185,5 +179,47 @@ echo getNavigation();
         </div>
     </section>
 </main>
+
+<script>
+// Handle career form submission
+document.getElementById('careerForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-2 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Submitting...';
+    
+    try {
+        const formData = new FormData(this);
+        
+        // Add source tracking
+        formData.append('source_url', window.location.href);
+        
+        const response = await fetch('api/submit-career.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Redirect to thank you page
+            window.location.href = 'thank-you.php?type=career';
+        } else {
+            alert(result.message || 'Failed to submit application. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
+    } catch (error) {
+        console.error('Error submitting application:', error);
+        alert('An error occurred. Please try again later.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    }
+});
+</script>
 
 <?php echo getFooter(); ?>
