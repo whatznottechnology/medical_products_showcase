@@ -2,9 +2,10 @@
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/footer.php';
+require_once 'config/settings.php';
 
 // Output the header and navigation
-echo getHeader('Thank You - ZEGNEN');
+echo getHeader('Thank You - ' . getSetting('site_name'));
 echo getNavigation();
 ?>
 
@@ -81,18 +82,22 @@ echo getNavigation();
             <div class="mt-12 pt-8 border-t border-gray-200">
                 <p class="text-gray-600 mb-4">Need immediate assistance?</p>
                 <div class="flex flex-wrap justify-center gap-6 text-sm">
-                    <a href="tel:+918902056626" class="flex items-center gap-2 text-yellow-600 hover:text-yellow-700 font-semibold">
+                    <?php if (getSetting('call_number')): ?>
+                    <a href="<?php echo getPhoneUrl(); ?>" class="flex items-center gap-2 text-yellow-600 hover:text-yellow-700 font-semibold">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                         </svg>
-                        +91 89020 56626
+                        <?php echo htmlspecialchars(getSetting('call_number')); ?>
                     </a>
-                    <a href="mailto:info@zegnen.com" class="flex items-center gap-2 text-yellow-600 hover:text-yellow-700 font-semibold">
+                    <?php endif; ?>
+                    <?php if (getSetting('email')): ?>
+                    <a href="<?php echo getEmailUrl('Thank you message'); ?>" class="flex items-center gap-2 text-yellow-600 hover:text-yellow-700 font-semibold">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
-                        info@zegnen.com
+                        <?php echo htmlspecialchars(getSetting('email')); ?>
                     </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

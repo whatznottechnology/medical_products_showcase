@@ -159,9 +159,9 @@ function getNavigation() {
 
                         <!-- Company Details -->
                         <div class="text-xs text-gray-800 leading-relaxed space-y-1" style="font-family: 'Inter', sans-serif;">
-                            <p class="font-bold text-sm"><?php echo htmlspecialchars(getSetting('site_name', 'ZEGNEN International Company')); ?></p>
+                            <p class="font-bold text-sm"><?php echo htmlspecialchars(getSetting('site_name')); ?></p>
                             <p class="font-semibold text-yellow-800">Registered Office</p>
-                            <p class="font-medium"><?php echo htmlspecialchars(getSetting('site_name', 'ZEGNEN INTERNATIONAL COMPANY')); ?></p>
+                            <p class="font-medium"><?php echo htmlspecialchars(getSetting('site_name')); ?></p>
                             <p>Leading CSSD Products Manufacturer</p>
                             <p>Sterilization & Infection Control Solutions</p>
                             <?php if (getSetting('email')): ?>

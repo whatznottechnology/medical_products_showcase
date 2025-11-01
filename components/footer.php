@@ -231,10 +231,10 @@ function getFooter() {
 
                 <!-- Company Registration -->
                 <div class="w-full lg:w-auto lg:text-right">
-                    <p class="text-gray-800 text-sm sm:text-base font-medium"><?php echo htmlspecialchars(getSetting('site_name', 'ZEGNEN International Company')); ?></p>
+                    <p class="text-gray-800 text-sm sm:text-base font-medium"><?php echo htmlspecialchars(getSetting('site_name')); ?></p>
                     <div class="text-gray-700 text-xs mt-1 space-y-0.5">
                         <p><strong>Registered Office</strong></p>
-                        <p><?php echo htmlspecialchars(getSetting('site_name', 'ZEGNEN INTERNATIONAL COMPANY')); ?></p>
+                        <p><?php echo htmlspecialchars(getSetting('site_name')); ?></p>
                         <p>Leading CSSD Products Manufacturer</p>
                         <p>Sterilization & Infection Control Solutions</p>
                         <?php if (getSetting('email')): ?>

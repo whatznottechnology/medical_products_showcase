@@ -2,6 +2,11 @@ RewriteEngine On
 
 ErrorDocument 404 /p/404.php
 
+# Redirect /index to root
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^index/?$ / [R=301,L]
+
 # Hide .php extensions
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
