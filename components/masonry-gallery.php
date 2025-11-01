@@ -1,7 +1,6 @@
 <?php
 function getMasonryGallery() {
     require_once __DIR__ . '/../config/Database.php';
-    require_once __DIR__ . '/../includes/frontend-helper.php';
     
     // Fetch active gallery images
     $db = Database::getInstance();
@@ -38,15 +37,15 @@ function getMasonryGallery() {
                 <!-- Row 1: 3 images -->
                 <div class="masonry-row row-3">
                     <?php foreach ($row1Images as $image): 
-                        $imagePath = FrontendHelper::getImageUrl(str_replace('//', '/', $image['image_path']));
-                        if (empty($imagePath)) continue;
+                        $imagePath = str_replace('//', '/', $image['image_path']);
                         $imageType = $image['image_type'] ?? 'portrait';
                     ?>
                     <div class="masonry-card <?php echo htmlspecialchars($imageType); ?>">
                         <img src="<?php echo htmlspecialchars($imagePath); ?>" 
                              alt="<?php echo htmlspecialchars($image['title'] ?? 'Gallery Image'); ?>" 
                              class="masonry-img"
-                             loading="lazy">
+                             loading="lazy"
+                             onerror="this.parentElement.style.display='none'">
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -54,15 +53,15 @@ function getMasonryGallery() {
                 <!-- Row 2: 2 images -->
                 <div class="masonry-row row-2">
                     <?php foreach ($row2Images as $image): 
-                        $imagePath = FrontendHelper::getImageUrl(str_replace('//', '/', $image['image_path']));
-                        if (empty($imagePath)) continue;
+                        $imagePath = str_replace('//', '/', $image['image_path']);
                         $imageType = $image['image_type'] ?? 'landscape';
                     ?>
                     <div class="masonry-card <?php echo htmlspecialchars($imageType); ?>">
                         <img src="<?php echo htmlspecialchars($imagePath); ?>" 
                              alt="<?php echo htmlspecialchars($image['title'] ?? 'Gallery Image'); ?>" 
                              class="masonry-img"
-                             loading="lazy">
+                             loading="lazy"
+                             onerror="this.parentElement.style.display='none'">
                     </div>
                     <?php endforeach; ?>
                 </div>

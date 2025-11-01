@@ -31,7 +31,6 @@ function getNavigation() {
             
             <!-- Desktop Call Button - Yellow border design -->
             <div class="flex items-center">
-                <?php if (getSetting('call_number')): ?>
                 <a href="<?php echo getPhoneUrl(); ?>"
                     class="bg-transparent hover:bg-yellow-500 border-2 border-yellow-500 text-white hover:text-gray-900 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 whitespace-nowrap shadow-lg">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,15 +38,6 @@ function getNavigation() {
                     </svg>
                     Call Now <?php echo htmlspecialchars(getSetting('call_number')); ?>
                 </a>
-                <?php else: ?>
-                <a href="tel:+918902056626"
-                    class="bg-transparent hover:bg-yellow-500 border-2 border-yellow-500 text-white hover:text-gray-900 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 whitespace-nowrap shadow-lg">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                    </svg>
-                    Call Now +91 89020 56626
-                </a>
-                <?php endif; ?>
             </div>
         </div>
 
@@ -141,7 +131,6 @@ function getNavigation() {
 
                 <!-- Call Now Button -->
                 <div class="px-3 mt-6 mb-4">
-                    <?php if (getSetting('call_number')): ?>
                     <a href="<?php echo getPhoneUrl(); ?>" class="flex items-center justify-center w-full bg-gray-900 hover:bg-black text-white font-bold px-4 py-3 rounded-full transition-all duration-300 shadow-lg text-sm border-2 border-gray-900 hover:border-black" style="font-family: 'Inter', sans-serif;">
                         <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
@@ -151,17 +140,6 @@ function getNavigation() {
                             <div class="text-yellow-400 text-xs font-semibold"><?php echo htmlspecialchars(getSetting('call_number')); ?></div>
                         </span>
                     </a>
-                    <?php else: ?>
-                    <a href="tel:+918902056626" class="flex items-center justify-center w-full bg-gray-900 hover:bg-black text-white font-bold px-4 py-3 rounded-full transition-all duration-300 shadow-lg text-sm border-2 border-gray-900 hover:border-black" style="font-family: 'Inter', sans-serif;">
-                        <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                        <span class="text-center">
-                            <div class="font-bold text-sm">Call Now</div>
-                            <div class="text-yellow-400 text-xs font-semibold">+91 89020 56626</div>
-                        </span>
-                    </a>
-                    <?php endif; ?>
                 </div>
 
                 <!-- Company Information -->

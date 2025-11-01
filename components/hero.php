@@ -2,13 +2,12 @@
 function getHeroSection() {
     // Fetch banner from database
     require_once __DIR__ . '/../config/Database.php';
-    require_once __DIR__ . '/../includes/frontend-helper.php';
     $db = Database::getInstance();
     $banner = $db->fetchOne("SELECT image_path FROM banners WHERE page = ? AND status = 'active' ORDER BY created_at DESC LIMIT 1", ['home']);
     
     $heroBannerPath = !empty($banner['image_path']) 
-        ? FrontendHelper::getImageUrl($banner['image_path'])
-        : '';
+        ? $banner['image_path']
+        : 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80';
     
     ob_start();
 ?>

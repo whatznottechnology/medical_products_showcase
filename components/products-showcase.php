@@ -50,21 +50,20 @@ function getProductsShowcase() {
                     <?php
                     // Fetch products from database
                     require_once __DIR__ . '/../config/Database.php';
-                    require_once __DIR__ . '/../includes/frontend-helper.php';
                     $db = Database::getInstance();
                     $products = $db->fetchAll("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC LIMIT 6");
 
                     foreach ($products as $product):
-                        // Get image URL from database
-                        $mainImage = !empty($product['main_image']) ? FrontendHelper::getImageUrl(str_replace('//', '/', $product['main_image'])) : '';
-                        if (empty($mainImage)) continue; // Skip if no valid image
+                        // Clean image path (remove double slashes)
+                        $mainImage = !empty($product['main_image']) ? str_replace('//', '/', $product['main_image']) : 'assets/images/placeholder.png';
                         $badge = !empty($product['badge']) ? $product['badge'] : 'ISO Certified';
                     ?>
                     <a href="product-details.php?id=<?php echo $product['id']; ?>" class="flex-shrink-0 w-72 sm:w-80 lg:w-96 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl hover:border-yellow-200 transition-all duration-300 group block">
                         <div class="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative p-4 sm:p-6 overflow-hidden">
                             <img src="<?php echo htmlspecialchars($mainImage); ?>" 
                                  alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                                 class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110">
+                                 class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
+                                 onerror="this.src='assets/images/placeholder.png'">
                             <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-yellow-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-md">
                                 <?php echo htmlspecialchars($badge); ?>
                             </div>

@@ -8,7 +8,7 @@ require_once 'config/settings.php';
 // Output the header and navigation
 echo getHeader(
     'Contact Us - ZEGNEN International Company | Get CSSD Solutions',
-    'Contact ZEGNEN for CSSD products, sterilization solutions, and infection control needs. 24/7 expert support, product consultations, and technical assistance. Call ' . getSetting('call_number', '+91 89020 56626') . ' or email ' . getSetting('email', 'info@zegnen.com') . ' for healthcare sterilization solutions.',
+    'Contact ZEGNEN for CSSD products, sterilization solutions, and infection control needs. 24/7 expert support, product consultations, and technical assistance. Contact us for healthcare sterilization solutions.',
     'contact ZEGNEN, CSSD support, sterilization help, infection control consultation, medical device inquiry, healthcare product support, sterilization consultation, CSSD technical support, medical equipment inquiry'
 );
 echo getNavigation();

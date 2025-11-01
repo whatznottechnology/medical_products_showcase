@@ -218,40 +218,23 @@ class DatabaseInstaller {
      */
     private function insertDefaultData() {
         // Create default admin user
-        $adminEmail = $_ENV['ADMIN_EMAIL'] ?? 'admin@zegnen.com';
-        $adminPassword = password_hash($_ENV['ADMIN_PASSWORD'] ?? 'Admin@123', PASSWORD_DEFAULT);
+        $adminEmail = $_ENV['ADMIN_EMAIL'] ?? '';
+        if (empty($adminEmail)) {
+            throw new Exception('ADMIN_EMAIL environment variable is not set');
+        }
+        
+        $adminPassword = $_ENV['ADMIN_PASSWORD'] ?? '';
+        if (empty($adminPassword)) {
+            throw new Exception('ADMIN_PASSWORD environment variable is not set');
+        }
         
         $existingAdmin = $this->db->fetchOne("SELECT id FROM admin WHERE email = ?", [$adminEmail]);
         if (!$existingAdmin) {
             $this->db->insert('admin', [
                 'email' => $adminEmail,
-                'password' => $adminPassword,
+                'password' => password_hash($adminPassword, PASSWORD_DEFAULT),
                 'name' => 'Administrator'
             ]);
-        }
-        
-        // Insert default settings
-        $defaultSettings = [
-            ['setting_key' => 'site_name', 'setting_value' => 'ZEGNEN', 'setting_type' => 'text'],
-            ['setting_key' => 'call_number', 'setting_value' => '+91 89020 56626', 'setting_type' => 'text'],
-            ['setting_key' => 'whatsapp_number', 'setting_value' => '918902056626', 'setting_type' => 'text'],
-            ['setting_key' => 'email', 'setting_value' => 'info@zegnen.com', 'setting_type' => 'text'],
-            ['setting_key' => 'banner_image', 'setting_value' => 'assets/images/banner.jpg', 'setting_type' => 'image'],
-            ['setting_key' => 'facebook_url', 'setting_value' => '#', 'setting_type' => 'text'],
-            ['setting_key' => 'instagram_url', 'setting_value' => '#', 'setting_type' => 'text'],
-            ['setting_key' => 'youtube_url', 'setting_value' => '#', 'setting_type' => 'text'],
-            ['setting_key' => 'linkedin_url', 'setting_value' => '#', 'setting_type' => 'text'],
-            ['setting_key' => 'twitter_url', 'setting_value' => '#', 'setting_type' => 'text'],
-        ];
-        
-        foreach ($defaultSettings as $setting) {
-            $existing = $this->db->fetchOne(
-                "SELECT id FROM settings WHERE setting_key = ?", 
-                [$setting['setting_key']]
-            );
-            if (!$existing) {
-                $this->db->insert('settings', $setting);
-            }
         }
     }
 }

@@ -19,37 +19,10 @@ function getSettings() {
             foreach ($settingsArray as $setting) {
                 $settings[$setting['setting_key']] = $setting['setting_value'];
             }
-            
-            // If no settings found, return defaults
-            if (empty($settings)) {
-                $settings = [
-                    'site_name' => 'ZEGNEN',
-                    'email' => 'info@zegnen.com',
-                    'call_number' => '+91 89020 56626',
-                    'whatsapp_number' => '918902056626',
-                    'address' => 'India',
-                    'facebook_url' => '',
-                    'instagram_url' => '',
-                    'twitter_url' => '',
-                    'youtube_url' => '',
-                    'linkedin_url' => ''
-                ];
-            }
         } catch (Exception $e) {
-            // Fallback to defaults if database error
+            // Log error but don't provide fallback data
             error_log("Settings database error: " . $e->getMessage());
-            $settings = [
-                'site_name' => 'ZEGNEN',
-                'email' => 'info@zegnen.com',
-                'call_number' => '+91 89020 56626',
-                'whatsapp_number' => '918902056626',
-                'address' => 'India',
-                'facebook_url' => '',
-                'instagram_url' => '',
-                'twitter_url' => '',
-                'youtube_url' => '',
-                'linkedin_url' => ''
-            ];
+            $settings = [];
         }
     }
     

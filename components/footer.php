@@ -12,7 +12,7 @@ function getFooter() {
             <div class="lg:col-span-1">
                 <div class="flex items-center gap-3 mb-3 sm:mb-4">
                     <img src="assets/images/zic_logo_black.png" alt="ZEGNEN Logo" class="h-8 sm:h-10 w-auto">
-                    <h3 class="text-lg sm:text-xl font-bold text-gray-900"><?php echo htmlspecialchars(getSetting('site_name', 'ZEGNEN')); ?></h3>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-900"><?php echo htmlspecialchars(getSetting('site_name')); ?></h3>
                 </div>
                 <p class="text-gray-800 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                     Leading manufacturer of CSSD products for sterilization, infection control, and hospital hygiene solutions.

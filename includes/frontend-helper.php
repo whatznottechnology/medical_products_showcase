@@ -148,30 +148,6 @@ class FrontendHelper {
     }
     
     /**
-     * Get image URL with proper path handling for subdirectory
-     * Handles both relative paths from database and absolute paths
-     */
-    public static function getImageUrl($imagePath, $default = '') {
-        if (empty($imagePath)) {
-            return $imagePath ?: '';
-        }
-        
-        // If path is already absolute or external URL
-        if (strpos($imagePath, 'http') === 0 || strpos($imagePath, '//') === 0) {
-            return $imagePath;
-        }
-        
-        // Check if image exists
-        $fullPath = __DIR__ . '/../' . $imagePath;
-        if (file_exists($fullPath)) {
-            return $imagePath;
-        }
-        
-        // Return empty string (no fallback)
-        return '';
-    }
-    
-    /**
      * Format phone number for WhatsApp link
      */
     public static function formatWhatsAppNumber($number) {
@@ -197,10 +173,6 @@ class FrontendHelper {
 // Convenience functions
 function get_setting($key, $default = '') {
     return FrontendHelper::getSetting($key, $default);
-}
-
-function get_image_url($imagePath, $default = '') {
-    return FrontendHelper::getImageUrl($imagePath, $default);
 }
 
 function get_products($limit = null, $category = null) {
