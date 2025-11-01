@@ -1,5 +1,6 @@
 <?php
 require_once 'config/Database.php';
+require_once 'config/FileUploader.php';
 require_once 'config/settings.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
@@ -64,8 +65,8 @@ $product['instructions'] = !empty($product['instructions']) ? json_decode($produ
 $product['features'] = !empty($product['features']) ? json_decode($product['features'], true) : [];
 $product['specifications'] = !empty($product['specifications']) ? json_decode($product['specifications'], true) : [];
 
-// Get first image for main display (database already has full path like uploads/products/image.png)
-$firstImage = !empty($parallaxImages) ? $parallaxImages[0] : 'assets/images/placeholder.png';
+// Get first image for main display 
+$firstImage = !empty($parallaxImages) ? FileUploader::getImagePath($parallaxImages[0]) : 'assets/images/placeholder.png';
 
 // Fetch active reviews for this product (display_location can be 'product' or 'both')
 $reviews = $db->fetchAll("SELECT * FROM reviews WHERE status = 'active' AND (display_location = 'product' OR display_location = 'both') ORDER BY created_at DESC LIMIT 10");
@@ -111,10 +112,12 @@ echo getNavigation();
                     <!-- Thumbnail Gallery -->
                     <?php if (count($galleryImages) > 1): ?>
                     <div class="grid grid-cols-4 gap-2">
-                        <?php foreach (array_slice($galleryImages, 0, 4) as $index => $image): ?>
+                        <?php foreach (array_slice($galleryImages, 0, 4) as $index => $image): 
+                            $thumbImage = FileUploader::getImagePath($image);
+                        ?>
                         <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-75 transition-opacity border-2 border-transparent hover:border-yellow-500"
-                             onclick="changeMainImage('<?php echo htmlspecialchars($image); ?>')">
-                            <img src="<?php echo htmlspecialchars($image); ?>" 
+                             onclick="changeMainImage('<?php echo htmlspecialchars($thumbImage); ?>')">
+                            <img src="<?php echo htmlspecialchars($thumbImage); ?>" 
                                  alt="Product view <?php echo $index + 1; ?>" 
                                  class="w-full h-full object-cover">
                         </div>
@@ -218,11 +221,13 @@ echo getNavigation();
     </section>
 
     <!-- Parallax Section with Fixed Image -->
-    <?php if (!empty($parallaxImages)): ?>
+    <?php if (!empty($parallaxImages)): 
+        $parallaxPath = FileUploader::getImagePath($parallaxImages[0]);
+    ?>
     <section class="relative overflow-hidden parallax-section-mobile" style="height: 600px;">
         <!-- Full-width background image -->
         <div class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" 
-             style="background-image: url('<?php echo htmlspecialchars($parallaxImages[0]); ?>'); background-attachment: fixed;">
+             style="background-image: url('<?php echo htmlspecialchars($parallaxPath); ?>'); background-attachment: fixed;">
         </div>
     </section>
     <?php endif; ?>

@@ -182,7 +182,7 @@ $images = $db->fetchAll("SELECT * FROM gallery ORDER BY display_order, created_a
                         ?>
                         <div class="col-md-3 col-sm-6">
                             <div class="card h-100">
-                                <img src="/p/<?php echo $image['image_path']; ?>" 
+                                <img src="<?php echo FileUploader::getImagePath($image['image_path']); ?>" 
                                      class="card-img-top" 
                                      alt="<?php echo $image['alt_text']; ?>" 
                                      style="height: 200px; object-fit: cover;">

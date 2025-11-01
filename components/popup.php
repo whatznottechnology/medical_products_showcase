@@ -1,6 +1,7 @@
 <?php
 function getLeadPopup() {
     require_once __DIR__ . '/../config/Database.php';
+    require_once __DIR__ . '/../config/FileUploader.php';
     
     // Fetch active popup
     $db = Database::getInstance();
@@ -11,8 +12,8 @@ function getLeadPopup() {
         return '';
     }
     
-    // Use correct path without admin/ prefix
-    $imagePath = !empty($popup['image_path']) ? $popup['image_path'] : '';
+    // Use FileUploader helper to normalize image paths
+    $imagePath = !empty($popup['image_path']) ? FileUploader::getImagePath($popup['image_path']) : '';
     
     ob_start();
 ?>

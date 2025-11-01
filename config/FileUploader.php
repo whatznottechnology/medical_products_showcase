@@ -132,7 +132,44 @@ class FileUploader {
     }
     
     /**
-     * Delete a file
+     * Get proper image path for display
+     * Handles both localhost and production URLs
+     */
+    public static function getImagePath($filePath) {
+        if (empty($filePath)) {
+            return 'assets/images/placeholder.png';
+        }
+        
+        // Clean up the path first
+        $filePath = str_replace('\\', '/', $filePath);
+        $filePath = str_replace('//', '/', $filePath);
+        
+        // Check if we're on localhost
+        $isLocalhost = strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                       strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false;
+        
+        // Remove /p/ prefix if present
+        $filePath = str_replace('/p/', '', $filePath);
+        $filePath = str_replace('p/', '', $filePath);
+        
+        // Ensure clean path
+        $filePath = str_replace('//', '/', $filePath);
+        
+        // Ensure it starts with /
+        if (strpos($filePath, 'uploads/') === 0 || strpos($filePath, 'assets/') === 0) {
+            $filePath = '/' . $filePath;
+        }
+        
+        // Add /p prefix if on localhost
+        if ($isLocalhost && strpos($filePath, '/p/') === false) {
+            $filePath = '/p' . $filePath;
+        }
+        
+        return $filePath;
+    }
+    
+    /**
+     * Delete an uploaded file
      */
     public function delete($filePath) {
         $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/p/' . $filePath;

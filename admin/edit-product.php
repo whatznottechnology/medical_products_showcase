@@ -347,7 +347,7 @@ $specifications = json_decode($product['specifications'] ?? '[]', true) ?: [];
                                 <label class="form-label fw-semibold">Main Image (Featured)</label>
                                 <?php if ($product['main_image']): ?>
                                 <div class="mb-2">
-                                    <img src="/p/<?php echo $product['main_image']; ?>" class="img-thumbnail" style="max-height: 150px;">
+                                    <img src="<?php echo FileUploader::getImagePath($product['main_image']); ?>" class="img-thumbnail" style="max-height: 150px;">
                                 </div>
                                 <?php endif; ?>
                                 <input type="file" name="main_image" class="form-control" accept="image/*">
@@ -366,7 +366,7 @@ $specifications = json_decode($product['specifications'] ?? '[]', true) ?: [];
                                 ?>
                                 <?php if ($parallaxImg): ?>
                                 <div class="mb-2">
-                                    <img src="/p/<?php echo $parallaxImg['image_path']; ?>" class="img-thumbnail" style="max-height: 150px;">
+                                    <img src="<?php echo FileUploader::getImagePath($parallaxImg['image_path']); ?>" class="img-thumbnail" style="max-height: 150px;">
                                     <div class="form-check mt-1">
                                         <input type="checkbox" name="delete_parallax" value="<?php echo $parallaxImg['id']; ?>" 
                                                class="form-check-input" id="deleteParallax">

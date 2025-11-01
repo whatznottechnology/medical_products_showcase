@@ -50,12 +50,13 @@ function getProductsShowcase() {
                     <?php
                     // Fetch products from database
                     require_once __DIR__ . '/../config/Database.php';
+                    require_once __DIR__ . '/../config/FileUploader.php';
                     $db = Database::getInstance();
                     $products = $db->fetchAll("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC LIMIT 6");
 
                     foreach ($products as $product):
-                        // Clean image path (remove double slashes)
-                        $mainImage = !empty($product['main_image']) ? str_replace('//', '/', $product['main_image']) : 'assets/images/placeholder.png';
+                        // Get proper image path
+                        $mainImage = FileUploader::getImagePath($product['main_image']);
                         $badge = !empty($product['badge']) ? $product['badge'] : 'ISO Certified';
                     ?>
                     <a href="product-details.php?id=<?php echo $product['id']; ?>" class="flex-shrink-0 w-72 sm:w-80 lg:w-96 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl hover:border-yellow-200 transition-all duration-300 group block">

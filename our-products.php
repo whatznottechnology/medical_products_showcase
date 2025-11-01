@@ -1,5 +1,6 @@
 <?php
 require_once 'config/Database.php';
+require_once 'config/FileUploader.php';
 require_once 'components/header.php';
 require_once 'components/navigation.php';
 require_once 'components/footer.php';
@@ -52,10 +53,8 @@ echo getNavigation();
             <!-- Products Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="productsGrid">
                 <?php foreach ($products as $product): 
-                    // Use main_image (featured 1:1 image) for product cards
-                    $mainImage = !empty($product['main_image']) 
-                        ? str_replace('//', '/', $product['main_image']) 
-                        : 'assets/images/placeholder.png';
+                    // Use FileUploader helper to get correct image path
+                    $mainImage = FileUploader::getImagePath($product['main_image']);
                     
                     // Get badge/certification
                     $badge = !empty($product['badge']) ? $product['badge'] : 'ISO Certified';

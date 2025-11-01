@@ -106,7 +106,7 @@ $products = $db->fetchAll("SELECT * FROM products ORDER BY created_at DESC");
                                 <tr>
                                     <td>
                                         <?php if ($product['main_image']): ?>
-                                        <img src="/p/<?php echo $product['main_image']; ?>" 
+                                        <img src="<?php echo FileUploader::getImagePath($product['main_image']); ?>" 
                                              alt="<?php echo htmlspecialchars($product['name']); ?>" 
                                              style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
                                         <?php endif; ?>

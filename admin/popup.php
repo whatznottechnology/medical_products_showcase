@@ -157,7 +157,7 @@ $currentPopup = $db->fetchOne("SELECT * FROM popup ORDER BY id DESC LIMIT 1");
                         <div class="card-body">
                             <?php if ($currentPopup && $currentPopup['image_path']): ?>
                             <div class="text-center">
-                                <img src="/p/<?php echo $currentPopup['image_path']; ?>" 
+                                <img src="<?php echo FileUploader::getImagePath($currentPopup['image_path']); ?>" 
                                      alt="<?php echo $currentPopup['alt_text']; ?>" 
                                      class="img-fluid rounded shadow-lg" 
                                      style="max-height: 500px;">

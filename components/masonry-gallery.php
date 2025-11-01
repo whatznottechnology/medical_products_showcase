@@ -1,6 +1,7 @@
 <?php
 function getMasonryGallery() {
     require_once __DIR__ . '/../config/Database.php';
+    require_once __DIR__ . '/../config/FileUploader.php';
     
     // Fetch active gallery images
     $db = Database::getInstance();
@@ -37,7 +38,7 @@ function getMasonryGallery() {
                 <!-- Row 1: 3 images -->
                 <div class="masonry-row row-3">
                     <?php foreach ($row1Images as $image): 
-                        $imagePath = str_replace('//', '/', $image['image_path']);
+                        $imagePath = FileUploader::getImagePath($image['image_path']);
                         $imageType = $image['image_type'] ?? 'portrait';
                     ?>
                     <div class="masonry-card <?php echo htmlspecialchars($imageType); ?>">
@@ -53,7 +54,7 @@ function getMasonryGallery() {
                 <!-- Row 2: 2 images -->
                 <div class="masonry-row row-2">
                     <?php foreach ($row2Images as $image): 
-                        $imagePath = str_replace('//', '/', $image['image_path']);
+                        $imagePath = FileUploader::getImagePath($image['image_path']);
                         $imageType = $image['image_type'] ?? 'landscape';
                     ?>
                     <div class="masonry-card <?php echo htmlspecialchars($imageType); ?>">
