@@ -142,18 +142,20 @@ class FileUploader {
         
         // Clean up the path first
         $filePath = str_replace('\\', '/', $filePath);
-        $filePath = str_replace('//', '/', $filePath);
+        
+        // Remove /p/ prefix if present (only at the beginning)
+        if (strpos($filePath, '/p/') === 0) {
+            $filePath = substr($filePath, 3); // Remove first 3 characters ("/p/")
+        }
+        
+        // Clean up double slashes
+        while (strpos($filePath, '//') !== false) {
+            $filePath = str_replace('//', '/', $filePath);
+        }
         
         // Check if we're on localhost
         $isLocalhost = strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
                        strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false;
-        
-        // Remove /p/ prefix if present
-        $filePath = str_replace('/p/', '', $filePath);
-        $filePath = str_replace('p/', '', $filePath);
-        
-        // Ensure clean path
-        $filePath = str_replace('//', '/', $filePath);
         
         // Ensure it starts with /
         if (strpos($filePath, 'uploads/') === 0 || strpos($filePath, 'assets/') === 0) {
@@ -161,7 +163,7 @@ class FileUploader {
         }
         
         // Add /p prefix if on localhost
-        if ($isLocalhost && strpos($filePath, '/p/') === false) {
+        if ($isLocalhost && strpos($filePath, '/p/') !== 0) {
             $filePath = '/p' . $filePath;
         }
         
