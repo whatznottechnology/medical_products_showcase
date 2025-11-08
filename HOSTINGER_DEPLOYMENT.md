@@ -65,7 +65,31 @@ TIMEZONE=Asia/Kolkata
 
 4. Save the file
 
-### 4. **Set Directory Permissions** ⚠️ CRITICAL
+### 4. **Update .htaccess Files for Production** ⚠️ IMPORTANT
+
+The `.htaccess` files need to be updated for production (remove `/p/` paths):
+
+**Root .htaccess:**
+```bash
+1. In File Manager, go to public_html
+2. Rename .htaccess to .htaccess.localhost (backup)
+3. Rename .htaccess.production to .htaccess
+```
+
+**Admin .htaccess:**
+```bash
+1. In File Manager, go to public_html/admin/
+2. Rename .htaccess to .htaccess.localhost (backup)
+3. Rename .htaccess.production to .htaccess
+```
+
+**What changes:**
+- ErrorDocument path: `/p/404.php` → `/404.php`
+- RewriteBase: `/p/admin/` → `/admin/`
+- Admin paths: `/p/admin/login.php` → `/admin/login.php`
+- HTTPS is automatically enabled in production
+
+### 5. **Set Directory Permissions** ⚠️ CRITICAL
 
 **These folders MUST be writable (755 or 777):**
 
@@ -95,7 +119,7 @@ In File Manager, right-click each folder → **Permissions** → Set to **755** 
 - **755** = Owner can read/write/execute, others can read/execute (recommended)
 - **777** = Everyone can read/write/execute (less secure but works if 755 fails)
 
-### 5. **Fix Image Display Issue** 🔧
+### 6. **Fix Image Display Issue** 🔧
 
 **Problem:** Images upload but don't show
 
@@ -142,16 +166,16 @@ The code already handles this automatically via `FileUploader::getImagePath()`, 
 4. Should be: `/uploads/products/filename.png`
 5. NOT: `/p/uploads/products/filename.png`
 
-### 6. **Verify Upload Functionality**
+### 7. **Verify Upload Functionality**
 
 1. Login to admin panel: `https://yourdomain.com/admin`
 2. Try uploading a new product image
 3. Check if it appears on the frontend
 4. If not, check:
-   - Directory permissions (Step 4)
+   - Directory permissions (Step 5)
    - PHP upload limits (see below)
 
-### 7. **Check PHP Upload Limits**
+### 8. **Check PHP Upload Limits**
 
 In hPanel:
 1. Go to **Advanced** → **PHP Configuration**
@@ -164,7 +188,7 @@ In hPanel:
    ```
 3. Save changes
 
-### 8. **Troubleshooting Images Not Showing**
+### 9. **Troubleshooting Images Not Showing**
 
 **Check 1 - File Exists?**
 ```
@@ -199,7 +223,7 @@ In phpMyAdmin:
 5. NOT: /p/uploads/products/filename.png
 ```
 
-### 9. **Test Your Website**
+### 10. **Test Your Website**
 
 ✅ Homepage loads
 ✅ Products display with images

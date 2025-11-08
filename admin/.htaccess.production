@@ -1,15 +1,12 @@
 RewriteEngine On
-# For localhost: /p/admin/
-# For production: /admin/ (update this line when deploying)
-RewriteBase /p/admin/
+# Production version (no /p prefix)
+RewriteBase /admin/
 
 # Redirect to login if not authenticated
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-# For localhost: /p/admin/login.php
-# For production: /admin/login.php (update these lines when deploying)
-RewriteCond %{REQUEST_URI} !^/p/admin/login\.php
-RewriteCond %{REQUEST_URI} !^/p/admin/assets/
+RewriteCond %{REQUEST_URI} !^/admin/login\.php
+RewriteCond %{REQUEST_URI} !^/admin/assets/
 RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
 
 # Security Headers

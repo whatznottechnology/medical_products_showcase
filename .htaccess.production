@@ -1,9 +1,7 @@
 RewriteEngine On
 
-# Error document - adjust path based on environment
-# For localhost: /p/404.php
-# For production: /404.php (update this line when deploying)
-ErrorDocument 404 /p/404.php
+# Error document for production (no /p prefix)
+ErrorDocument 404 /404.php
 
 # Redirect /index to root
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -15,9 +13,9 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L]
 
-# Force HTTPS (optional, uncomment if needed)
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Remove trailing slashes (optional)
 RewriteCond %{REQUEST_FILENAME} !-d

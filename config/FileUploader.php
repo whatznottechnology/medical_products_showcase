@@ -9,7 +9,12 @@ class FileUploader {
     private $allowedTypes;
     
     public function __construct($uploadDir = 'uploads/') {
-        $this->uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/p/' . $uploadDir;
+        // Check if we're on localhost
+        $isLocalhost = strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                       strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false;
+        
+        $baseDir = $isLocalhost ? '/p/' : '/';
+        $this->uploadDir = $_SERVER['DOCUMENT_ROOT'] . $baseDir . $uploadDir;
         $this->maxFileSize = (int)($_ENV['MAX_FILE_SIZE'] ?? 2097152); // 2MB default
         $this->allowedTypes = explode(',', $_ENV['ALLOWED_IMAGE_TYPES'] ?? 'jpg,jpeg,png,webp');
         
@@ -42,7 +47,10 @@ class FileUploader {
             // Move uploaded file
             if (move_uploaded_file($file['tmp_name'], $destinationPath)) {
                 // Return relative path from document root
-                return str_replace($_SERVER['DOCUMENT_ROOT'] . '/p/', '', $destinationPath);
+                $isLocalhost = strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                               strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false;
+                $baseDir = $isLocalhost ? '/p/' : '/';
+                return str_replace($_SERVER['DOCUMENT_ROOT'] . $baseDir, '', $destinationPath);
             }
             
             throw new Exception('Failed to move uploaded file');
@@ -174,7 +182,10 @@ class FileUploader {
      * Delete an uploaded file
      */
     public function delete($filePath) {
-        $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/p/' . $filePath;
+        $isLocalhost = strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                       strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false;
+        $baseDir = $isLocalhost ? '/p/' : '/';
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . $baseDir . $filePath;
         if (file_exists($fullPath)) {
             return unlink($fullPath);
         }
@@ -185,7 +196,10 @@ class FileUploader {
      * Resize image
      */
     public function resizeImage($sourcePath, $maxWidth = 1920, $maxHeight = 1080, $quality = 85) {
-        $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/p/' . $sourcePath;
+        $isLocalhost = strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                       strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false;
+        $baseDir = $isLocalhost ? '/p/' : '/';
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . $baseDir . $sourcePath;
         
         if (!file_exists($fullPath)) {
             return false;

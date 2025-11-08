@@ -63,7 +63,8 @@ class Auth {
      */
     public static function require() {
         if (!self::check()) {
-            header('Location: /p/admin/login.php');
+            $baseUrl = self::getBaseUrl();
+            header('Location: ' . $baseUrl . '/admin/login.php');
             exit;
         }
         
@@ -71,11 +72,21 @@ class Auth {
         $timeout = 1800;
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
             self::logout();
-            header('Location: /p/admin/login.php?timeout=1');
+            $baseUrl = self::getBaseUrl();
+            header('Location: ' . $baseUrl . '/admin/login.php?timeout=1');
             exit;
         }
         
         $_SESSION['last_activity'] = time();
+    }
+    
+    /**
+     * Get base URL (with /p for localhost, without for production)
+     */
+    private static function getBaseUrl() {
+        $isLocalhost = strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                       strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false;
+        return $isLocalhost ? '/p' : '';
     }
     
     /**
