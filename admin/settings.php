@@ -7,6 +7,10 @@ require_once '../config/Database.php';
 require_once '../config/Auth.php';
 require_once '../config/FileUploader.php';
 
+// Detect environment for base URL
+$isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+$baseUrl = $isLocalhost ? '/p/' : '/';
+
 Auth::require();
 
 $db = Database::getInstance();
@@ -78,10 +82,10 @@ foreach ($settingsArray as $setting) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Settings - ZEGNEN Admin</title>
-    <link rel="icon" type="image/png" href="../assets/images/zic_fav.png">
+    <link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>assets/images/zic_fav.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>admin/assets/css/admin.css">
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -106,6 +110,35 @@ foreach ($settingsArray as $setting) {
             
             <form method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?php echo Auth::generateToken(); ?>">
+                
+                <!-- General Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-building"></i> General Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Site Name</label>
+                                <input type="text" name="site_name" class="form-control" 
+                                       value="<?php echo htmlspecialchars($settings['site_name'] ?? 'ZEGNEN'); ?>" 
+                                       placeholder="ZEGNEN" required>
+                                <small class="text-muted">This appears in header, footer, and meta tags</small>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Bulk Discount Percentage</label>
+                                <div class="input-group">
+                                    <input type="number" name="bulk_discount_percentage" class="form-control" 
+                                           value="<?php echo htmlspecialchars($settings['bulk_discount_percentage'] ?? '30'); ?>" 
+                                           placeholder="30" min="0" max="100">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <small class="text-muted">Displays "Get up to X% off on bulk orders!" on homepage (Leave empty to hide)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Contact Information -->
                 <div class="card mb-4">
@@ -214,6 +247,6 @@ foreach ($settingsArray as $setting) {
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/admin.js"></script>
+    <script src="<?php echo $baseUrl; ?>admin/assets/js/admin.js"></script>
 </body>
 </html>

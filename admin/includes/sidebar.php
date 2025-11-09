@@ -2,7 +2,7 @@
 <div class="sidebar">
     <div class="sidebar-header">
         <div class="logo-container">
-            <img src="../assets/images/zic_logo.png" alt="ZEGNEN Logo" class="sidebar-logo">
+            <img src="<?php echo $baseUrl; ?>assets/images/zic_logo.png" alt="ZEGNEN Logo" class="sidebar-logo">
         </div>
         <div class="admin-badge">
             <i class="bi bi-shield-check"></i>

@@ -70,7 +70,7 @@ function getProductsShowcase() {
                             <img src="<?php echo htmlspecialchars($mainImage); ?>" 
                                  alt="<?php echo htmlspecialchars($product['name']); ?>" 
                                  class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
-                                 onerror="this.src='assets/images/placeholder.png'">
+                                 onerror="this.src='<?php echo $baseUrl; ?>assets/images/placeholder.png'">
                             <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-yellow-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-md">
                                 <?php echo htmlspecialchars($badge); ?>
                             </div>

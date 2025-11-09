@@ -6,6 +6,10 @@
 require_once '../config/Database.php';
 require_once '../config/Auth.php';
 
+// Detect environment for base URL
+$isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+$baseUrl = $isLocalhost ? '/p/' : '/';
+
 // Require authentication
 Auth::require();
 
@@ -105,10 +109,10 @@ $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Settings - ZEGNEN Admin</title>
-    <link rel="icon" type="image/png" href="../assets/images/zic_fav.png">
+    <link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>assets/images/zic_fav.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>admin/assets/css/admin.css">
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -228,6 +232,6 @@ $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/admin.js"></script>
+    <script src="<?php echo $baseUrl; ?>admin/assets/js/admin.js"></script>
 </body>
 </html>

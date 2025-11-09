@@ -78,9 +78,13 @@ $reviewsRow2 = array_slice($reviews, 5, 5);
 // Output the header and navigation
 echo getHeader(htmlspecialchars($product['name']) . ' - Product Details | ZEGNEN');
 echo getNavigation();
+
+// Get proper asset paths
+$isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+$baseUrl = $isLocalhost ? '/p/' : '/';
 ?>
 
-<link rel="stylesheet" href="assets/css/product-details.css">
+<link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/product-details.css">
 
 <main class="relative z-10" style="font-family: 'Inter', sans-serif;">
     <!-- Breadcrumb Navigation -->
@@ -629,7 +633,7 @@ echo getNavigation();
     </section>
 </main>
 
-<script src="assets/js/product-details.js"></script>
+<script src="<?php echo $baseUrl; ?>assets/js/product-details.js"></script>
 
 <script>
 // Change main product image when clicking thumbnails

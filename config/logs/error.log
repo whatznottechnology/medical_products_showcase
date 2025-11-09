@@ -4,3 +4,62 @@
 [02-Nov-2025 00:50:06 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "endif" in C:\xampp\htdocs\p\components\navigation.php on line 34
 [02-Nov-2025 01:37:33 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "public" in C:\xampp\htdocs\p\config\FileUploader.php on line 173
 [02-Nov-2025 01:37:38 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "public" in C:\xampp\htdocs\p\config\FileUploader.php on line 173
+[08-Nov-2025 17:59:28 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\p\components\masonry-gallery.php on line 41
+[08-Nov-2025 17:59:30 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\p\components\masonry-gallery.php on line 41
+[08-Nov-2025 17:59:42 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\p\components\masonry-gallery.php on line 41
+[08-Nov-2025 17:59:54 Asia/Kolkata] PHP Warning:  require_once(components/masonry-gallery.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\p\index.php on line 9
+[08-Nov-2025 17:59:54 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Failed opening required 'components/masonry-gallery.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\p\index.php:9
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\p\index.php on line 9
+[08-Nov-2025 17:59:56 Asia/Kolkata] PHP Warning:  require_once(C:\xampp\htdocs\p\components\masonry-gallery.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\p\index.php on line 9
+[08-Nov-2025 17:59:56 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Failed opening required 'components/masonry-gallery.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\p\index.php:9
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\p\index.php on line 9
+[08-Nov-2025 18:00:33 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "endforeach" in C:\xampp\htdocs\p\components\masonry-gallery.php on line 69
+[08-Nov-2025 18:00:41 Asia/Kolkata] PHP Parse error:  syntax error, unexpected token "endforeach" in C:\xampp\htdocs\p\components\masonry-gallery.php on line 69
+[08-Nov-2025 18:17:31 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function getMasonryGallery() in C:\xampp\htdocs\p\index.php:40
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\p\index.php on line 40
+[08-Nov-2025 18:17:35 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function getMasonryGallery() in C:\xampp\htdocs\p\index.php:40
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\p\index.php on line 40
+[08-Nov-2025 18:18:04 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function getMasonryGallery() in C:\xampp\htdocs\p\index.php:40
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\p\index.php on line 40
+[08-Nov-2025 18:18:54 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function getMasonryGallery() in C:\xampp\htdocs\p\index.php:40
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\p\index.php on line 40
+[09-Nov-2025 14:50:51 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 13
+[09-Nov-2025 14:51:10 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 13
+[09-Nov-2025 14:51:10 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 87
+[09-Nov-2025 14:51:10 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\footer.php on line 14
+[09-Nov-2025 14:52:32 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 13
+[09-Nov-2025 14:52:32 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 87
+[09-Nov-2025 14:52:32 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:52:32 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:52:32 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:52:32 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\footer.php on line 14
+[09-Nov-2025 14:52:35 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 13
+[09-Nov-2025 14:52:35 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 87
+[09-Nov-2025 14:52:35 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:52:35 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:52:35 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:52:35 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\footer.php on line 14
+[09-Nov-2025 14:53:52 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 13
+[09-Nov-2025 14:53:52 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 87
+[09-Nov-2025 14:53:53 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:53:53 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:53:53 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:53:53 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\footer.php on line 14
+[09-Nov-2025 14:53:56 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 13
+[09-Nov-2025 14:53:56 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\navigation.php on line 87
+[09-Nov-2025 14:53:56 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:53:56 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:53:56 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\products-showcase.php on line 73
+[09-Nov-2025 14:53:56 Asia/Kolkata] PHP Warning:  Undefined variable $baseUrl in C:\xampp\htdocs\p\components\footer.php on line 14

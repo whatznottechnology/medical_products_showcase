@@ -8,6 +8,10 @@ require_once '../config/Database.php';
 require_once '../config/Auth.php';
 require_once '../config/FileUploader.php';
 
+// Detect environment for base URL
+$isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+$baseUrl = $isLocalhost ? '/p/' : '/';
+
 Auth::require();
 
 $db = Database::getInstance();
@@ -95,10 +99,10 @@ $images = $db->fetchAll("SELECT * FROM gallery ORDER BY display_order, created_a
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery - ZEGNEN Admin</title>
-    <link rel="icon" type="image/png" href="../assets/images/zic_fav.png">
+    <link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>assets/images/zic_fav.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>admin/assets/css/admin.css">
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>
@@ -219,6 +223,6 @@ $images = $db->fetchAll("SELECT * FROM gallery ORDER BY display_order, created_a
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/admin.js"></script>
+    <script src="<?php echo $baseUrl; ?>admin/assets/js/admin.js"></script>
 </body>
 </html>

@@ -68,7 +68,7 @@ echo getNavigation();
 
             <div class="reveal">
                 <div class="rounded-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
-                    <img src="assets/images/zicabout.png" alt="Modern CSSD facility"
+                    <img src="<?php echo $baseUrl; ?>assets/images/zicabout.png" alt="Modern CSSD facility"
                          class="w-full object-cover h-80">
                 </div>
             </div>
@@ -167,8 +167,13 @@ echo getNavigation();
     </section>
 </main>
 
-<link rel="stylesheet" href="assets/css/about-page.css">
-<script src="assets/js/scroll-reveal.js"></script>
+<?php
+// Get proper asset paths
+$isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+$baseUrl = $isLocalhost ? '/p/' : '/';
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/about-page.css">
+<script src="<?php echo $baseUrl; ?>assets/js/scroll-reveal.js"></script>
 
 <?php
 // Output the footer

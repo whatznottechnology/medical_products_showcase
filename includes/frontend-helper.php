@@ -6,6 +6,15 @@
 
 require_once __DIR__ . '/../config/Database.php';
 
+/**
+ * Get proper base URL for assets (handles localhost vs production)
+ */
+function getBaseUrl() {
+    $isLocalhost = (strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                    strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false);
+    return $isLocalhost ? '/p/' : '/';
+}
+
 class FrontendHelper {
     private static $db;
     private static $settings;

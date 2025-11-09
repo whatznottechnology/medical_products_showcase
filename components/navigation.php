@@ -10,7 +10,7 @@ function getNavigation() {
         <!-- Logo -->
         <div class="text-white">
             <a href="index" class="inline-flex items-center -space-x-4">
-                <img src="assets/images/zic_logo.png" alt="ZEGNEN Logo" class="h-8 sm:h-10 lg:h-12 w-auto transition-all duration-300" id="navLogoImg">
+                <img src="<?php echo $baseUrl; ?>assets/images/zic_logo.png" alt="ZEGNEN Logo" class="h-8 sm:h-10 lg:h-12 w-auto transition-all duration-300" id="navLogoImg">
                 <h1 class="text-lg sm:text-xl lg:text-3xl font-bold tracking-wide transition-all duration-300" id="navLogo">ZEGNEN</h1>
             </a>
         </div>
@@ -84,7 +84,7 @@ function getNavigation() {
             <!-- Drawer Header -->
             <div class="px-5 pt-16 pb-4 border-b border-yellow-600">
                 <div class="flex items-center gap-0.5 mb-2">
-                    <img src="assets/images/zic_logo_black.png" alt="ZEGNEN Logo" class="h-8 w-auto">
+                    <img src="<?php echo $baseUrl; ?>assets/images/zic_logo_black.png" alt="ZEGNEN Logo" class="h-8 w-auto">
                     <h2 class="text-sm font-bold text-gray-900" style="font-family: 'Inter', sans-serif;">ZEGNEN</h2>
                 </div>
                 <p class="text-yellow-800 text-xs mt-0.5" style="font-family: 'Inter', sans-serif;">IT Research | Security | CSSD | Healthcare IT</p>
@@ -224,7 +224,12 @@ function getNavigation() {
     </div>
 </div>
 
-<script src="assets/js/navigation.js"></script>
+<?php
+    // Get proper JS path
+    $isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+    $baseUrl = $isLocalhost ? '/p/' : '/';
+?>
+<script src="<?php echo $baseUrl; ?>assets/js/navigation.js"></script>
 <?php
     return ob_get_clean();
 }

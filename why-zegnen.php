@@ -133,7 +133,7 @@ echo getNavigation();
                             </div>
                             <div class="order-1 lg:order-2 transform transition-all duration-700 translate-x-0 lg:translate-x-[100px] opacity-0" data-scroll="slideLeft">
                                 <div class="rounded-xl overflow-hidden shadow-lg">
-                                    <img src="assets/images/why1.jpg" 
+                                    <img src="<?php echo $baseUrl; ?>assets/images/why1.jpg" 
                                          alt="Sterilization Innovation" class="w-full h-48 sm:h-56 lg:h-64 object-cover">
                                 </div>
                             </div>
@@ -148,7 +148,7 @@ echo getNavigation();
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-16 items-center">
                             <div class="order-1 transform transition-all duration-700 translate-x-0 lg:translate-x-[-100px] opacity-0" data-scroll="slideRight">
                                 <div class="rounded-xl overflow-hidden shadow-lg">
-                                    <img src="assets/images/why2.jpg" 
+                                    <img src="<?php echo $baseUrl; ?>assets/images/why2.jpg" 
                                          alt="Eco-friendly Solutions" class="w-full h-48 sm:h-56 lg:h-64 object-cover">
                                 </div>
                             </div>
@@ -246,8 +246,13 @@ echo getNavigation();
     </section>
 </main>
 
-<link rel="stylesheet" href="assets/css/scroll-animations.css">
-<script src="assets/js/scroll-animations.js"></script>
+<?php
+// Get proper asset paths
+$isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+$baseUrl = $isLocalhost ? '/p/' : '/';
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/scroll-animations.css">
+<script src="<?php echo $baseUrl; ?>assets/js/scroll-animations.js"></script>
 
 <?php
 // Output the footer

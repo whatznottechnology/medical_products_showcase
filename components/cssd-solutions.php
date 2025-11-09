@@ -1,5 +1,8 @@
 <?php
 function getCssdSolutionsSection() {
+    // Include settings helper
+    require_once __DIR__ . '/../config/settings.php';
+    
     ob_start();
 ?>
 <section class="bg-gray-50 py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-12">
@@ -11,12 +14,17 @@ function getCssdSolutionsSection() {
                 <span class="text-yellow-600">the safer you stay.</span>
             </h2>
 
+            <?php 
+            $bulkDiscount = getSetting('bulk_discount_percentage', '30');
+            if (!empty($bulkDiscount)): 
+            ?>
             <div class="flex items-center mb-4 sm:mb-6">
                 <svg class="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mr-2 sm:mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-green-600 font-semibold text-base sm:text-lg">Get up to 30% off on bulk orders!</span>
+                <span class="text-green-600 font-semibold text-base sm:text-lg">Get up to <?php echo htmlspecialchars($bulkDiscount); ?>% off on bulk orders!</span>
             </div>
+            <?php endif; ?>
 
             <p class="text-gray-600 text-base sm:text-lg leading-relaxed mb-6 sm:mb-8 max-w-lg">
                 Finally a CSSD Solution Provider that just works. ZEGNEN offers 

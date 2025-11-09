@@ -53,8 +53,12 @@ echo getLeadPopup();
 
 // Output the footer (includes closing body and html tags)
 echo getFooter();
+
+// Get proper JS path
+$isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+$baseUrl = $isLocalhost ? '/p/' : '/';
 ?>
 
-<script src="assets/js/hero-search.js"></script>
-<script src="assets/js/product-slider.js"></script>
-<script src="assets/js/popup.js"></script>
+<script src="<?php echo $baseUrl; ?>assets/js/hero-search.js"></script>
+<script src="<?php echo $baseUrl; ?>assets/js/product-slider.js"></script>
+<script src="<?php echo $baseUrl; ?>assets/js/popup.js"></script>

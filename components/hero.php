@@ -12,12 +12,12 @@ function getHeroSection() {
     ob_start();
 ?>
 <!-- Hero Section with Background -->
-<div class="relative min-h-screen" style="background-image: url('<?php echo htmlspecialchars($heroBannerPath); ?>'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<div class="relative min-h-screen hero-background w-full" style="background-image: url('<?php echo htmlspecialchars($heroBannerPath); ?>'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <!-- Dark overlay for better text readability -->
     <div class="absolute inset-0 bg-black/40 z-0"></div>
     
-    <main class="relative z-10 min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-24 sm:pt-20 pb-8 md:pt-20">
-    <div class="max-w-6xl">
+    <main class="relative z-10 min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-24 sm:pt-20 pb-8 md:pt-20 w-full max-w-full">
+    <div class="max-w-6xl w-full">
         <!-- Main Heading -->
         <h1 class="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light leading-tight mb-2 sm:mb-3">
             Healthcare Excellence,
