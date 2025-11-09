@@ -19,6 +19,10 @@ function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN", 
     }
     
     ob_start();
+    
+    // Detect environment for proper paths
+    $isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+    $baseUrl = $isLocalhost ? '/p/' : '/';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,27 +40,27 @@ function getHeader($title = "ZEGNEN.COM - Healthcare Excellence, Hello ZEGNEN", 
     <meta property="og:url" content="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? '/'); ?>">
     <meta property="og:title" content="<?php echo htmlspecialchars($title); ?>">
     <meta property="og:description" content="<?php echo htmlspecialchars($description); ?>">
-    <meta property="og:image" content="assets/images/zic_logo.png">
+    <meta property="og:image" content="<?php echo $baseUrl; ?>assets/images/zic_logo.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? '/'); ?>">
     <meta property="twitter:title" content="<?php echo htmlspecialchars($title); ?>">
     <meta property="twitter:description" content="<?php echo htmlspecialchars($description); ?>">
-    <meta property="twitter:image" content="assets/images/zic_logo.png">
+    <meta property="twitter:image" content="<?php echo $baseUrl; ?>assets/images/zic_logo.png">
     
     <title><?php echo $title; ?></title>
-    <link rel="icon" type="image/png" href="assets/images/zic_fav.png?v=1.0">
-    <link rel="shortcut icon" type="image/png" href="assets/images/zic_fav.png?v=1.0">
-    <link rel="apple-touch-icon" href="assets/images/zic_fav.png?v=1.0">
+    <link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>assets/images/zic_fav.png?v=1.0">
+    <link rel="shortcut icon" type="image/png" href="<?php echo $baseUrl; ?>assets/images/zic_fav.png?v=1.0">
+    <link rel="apple-touch-icon" href="<?php echo $baseUrl; ?>assets/images/zic_fav.png?v=1.0">
     <link rel="canonical" href="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? '/'); ?>">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="assets/js/tailwind-config.js"></script>
+    <script src="<?php echo $baseUrl; ?>assets/js/tailwind-config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/header.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="assets/css/mobile-optimizations.css">
-    <link rel="stylesheet" href="assets/css/popup.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/header.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/mobile-optimizations.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/popup.css">
 </head>
 <body class="overflow-x-hidden">
 <?php

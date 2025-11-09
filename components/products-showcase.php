@@ -51,8 +51,14 @@ function getProductsShowcase() {
                     // Fetch products from database
                     require_once __DIR__ . '/../config/Database.php';
                     require_once __DIR__ . '/../config/FileUploader.php';
+                    
                     $db = Database::getInstance();
                     $products = $db->fetchAll("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC LIMIT 6");
+                    
+                    // Check if there are any products
+                    if (empty($products)) {
+                        echo '<div class="w-full text-center py-12"><p class="text-gray-500 text-lg">No products available at the moment.</p></div>';
+                    }
 
                     foreach ($products as $product):
                         // Get proper image path
@@ -111,7 +117,12 @@ function getProductsShowcase() {
     </div>
 </section>
 
-<link rel="stylesheet" href="assets/css/product-showcase.css">
+<?php
+    // Get proper CSS path
+    $isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+    $baseUrl = $isLocalhost ? '/p/' : '/';
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/product-showcase.css">
 <?php
     return ob_get_clean();
 }

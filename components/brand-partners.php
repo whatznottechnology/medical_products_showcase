@@ -53,7 +53,12 @@ function getBrandPartnersSection() {
     </div>
 </section>
 
-<link rel="stylesheet" href="assets/css/brand-partners.css">
+<?php
+    // Get proper CSS path
+    $isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+    $baseUrl = $isLocalhost ? '/p/' : '/';
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/brand-partners.css">
 <?php
     return ob_get_clean();
 }

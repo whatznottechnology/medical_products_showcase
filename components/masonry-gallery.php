@@ -4,12 +4,17 @@ function getMasonryGallery() {
     require_once __DIR__ . '/../config/FileUploader.php';
     
     // Fetch active gallery images
-    $db = Database::getInstance();
-    $galleryImages = $db->fetchAll("SELECT * FROM gallery WHERE status = 'active' ORDER BY display_order ASC, created_at DESC");
+    try {
+        $db = Database::getInstance();
+        $galleryImages = $db->fetchAll("SELECT * FROM gallery WHERE status = 'active' ORDER BY display_order ASC, created_at DESC");
+    } catch (Exception $e) {
+        error_log("Gallery fetch error: " . $e->getMessage());
+        return '<div class="text-center py-12"><p class="text-gray-500">Unable to load gallery at this time.</p></div>';
+    }
     
     // If no images, return empty
     if (empty($galleryImages)) {
-        return '';
+        return '<div class="text-center py-12"><p class="text-gray-500">No gallery images available yet. Check back soon!</p></div>';
     }
     
     // Distribute images into 3 columns for variety
@@ -45,8 +50,8 @@ function getMasonryGallery() {
             <div class="masonry-column">
                 <?php foreach ($columnImages as $image): 
                     $imagePath = FileUploader::getImagePath($image['image_path']);
-                    $imageType = $image['image_type'] ?? 'portrait';
-                    $altText = $image['alt_text'] ?? $image['title'] ?? 'Gallery Image';
+                    $imageType = !empty($image['image_type']) ? $image['image_type'] : 'portrait';
+                    $altText = !empty($image['alt_text']) ? $image['alt_text'] : (!empty($image['title']) ? $image['title'] : 'Gallery Image');
                 ?>
                 <div class="masonry-card <?php echo htmlspecialchars($imageType); ?>">
                     <img src="<?php echo htmlspecialchars($imagePath); ?>" 
