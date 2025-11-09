@@ -26,6 +26,10 @@ function getMasonryGallery() {
     unset($column);
     
     ob_start();
+    
+    // Get proper CSS path
+    $isLocalhost = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+    $baseUrl = $isLocalhost ? '/p/' : '/';
 ?>
 <!-- Masonry Gallery Section - Responsive Auto-Scroll -->
 <section class="masonry-gallery-section">
@@ -60,7 +64,7 @@ function getMasonryGallery() {
         </div>
     </div>
     
-    <link rel="stylesheet" href="assets/css/masonry-gallery.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>assets/css/masonry-gallery.css">
 </section>
 <?php
     return ob_get_clean();

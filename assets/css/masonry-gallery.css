@@ -1,25 +1,25 @@
-﻿/* Masonry Gallery - Bloom Hotels Style Auto-Scroll */
+﻿/* Masonry Gallery - Enhanced Responsive Auto-Scroll */
 .masonry-gallery-section {
-    padding: 30px 0;
+    padding: 40px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #fff 50%, #f0f2f5 100%);
     overflow: hidden;
     position: relative;
-    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
 }
 
 .gallery-container {
     width: 100%;
-    max-height: 70vh;
+    max-height: 600px;
     overflow: hidden;
     position: relative;
 }
 
 .masonry-track {
     display: flex;
-    gap: 10px;
-    padding: 8px 0;
-    animation: smoothScrollLeft 45s linear infinite;
+    gap: 14px;
+    padding: 10px 0;
+    animation: smoothScrollLeft 50s linear infinite;
     width: max-content;
     will-change: transform;
 }
@@ -27,20 +27,21 @@
 .masonry-column {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    min-width: 180px;
-    max-width: 180px;
+    gap: 14px;
+    min-width: 220px;
+    max-width: 220px;
+    flex-shrink: 0;
 }
 
 .masonry-card {
-    background: white;
-    border-radius: 8px;
+    background: #fff;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 3px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    flex-shrink: 0;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .masonry-card::after {
@@ -50,15 +51,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.03) 0%, transparent 100%);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, transparent 100%);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.35s ease;
     pointer-events: none;
 }
 
 .masonry-card:hover {
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-5px) scale(1.015);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
     z-index: 10;
 }
 
@@ -66,22 +67,22 @@
     opacity: 1;
 }
 
-/* Dynamic heights based on image type - random natural sizing */
+/* Image sizing based on aspect ratio type */
 .masonry-card.portrait {
-    height: 240px;
+    height: 280px;
 }
 
 .masonry-card.landscape {
-    height: 140px;
+    height: 160px;
 }
 
 .masonry-card.square {
-    height: 180px;
+    height: 220px;
 }
 
-/* Default if no type specified */
+/* Default for unspecified types */
 .masonry-card:not(.portrait):not(.landscape):not(.square) {
-    height: 160px;
+    height: 200px;
 }
 
 .masonry-img {
@@ -89,11 +90,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .masonry-card:hover .masonry-img {
-    transform: scale(1.06);
+    transform: scale(1.08);
 }
 
 @keyframes smoothScrollLeft {
@@ -105,130 +106,307 @@
     }
 }
 
-/* Desktop Large - 1400px+ */
-@media (min-width: 1400px) {
+/* Large Desktop - 1600px+ */
+@media (min-width: 1600px) {
+    .masonry-gallery-section {
+        padding: 50px 0;
+    }
+    
+    .masonry-column {
+        min-width: 260px;
+        max-width: 260px;
+        gap: 16px;
+    }
+    
+    .masonry-track {
+        gap: 16px;
+    }
+    
+    .gallery-container {
+        max-height: 650px;
+    }
+    
+    .masonry-card.portrait {
+        height: 340px;
+    }
+    
+    .masonry-card.landscape {
+        height: 190px;
+    }
+    
+    .masonry-card.square {
+        height: 260px;
+    }
+    
+    .masonry-card:not(.portrait):not(.landscape):not(.square) {
+        height: 240px;
+    }
+}
+
+/* Desktop - 1200px to 1599px */
+@media (min-width: 1200px) and (max-width: 1599px) {
+    .masonry-column {
+        min-width: 240px;
+        max-width: 240px;
+    }
+    
+    .gallery-container {
+        max-height: 620px;
+    }
+    
+    .masonry-card.portrait {
+        height: 300px;
+    }
+    
+    .masonry-card.landscape {
+        height: 175px;
+    }
+    
+    .masonry-card.square {
+        height: 240px;
+    }
+}
+
+/* Tablet Landscape - 1024px to 1199px */
+@media (min-width: 1024px) and (max-width: 1199px) {
     .masonry-gallery-section {
         padding: 35px 0;
     }
     
     .masonry-column {
-        min-width: 220px;
-        max-width: 220px;
+        min-width: 200px;
+        max-width: 200px;
         gap: 12px;
     }
     
     .masonry-track {
         gap: 12px;
+        animation-duration: 45s;
+    }
+    
+    .gallery-container {
+        max-height: 550px;
     }
     
     .masonry-card.portrait {
-        height: 280px;
+        height: 260px;
     }
     
     .masonry-card.landscape {
-        height: 160px;
+        height: 150px;
     }
     
     .masonry-card.square {
-        height: 220px;
+        height: 200px;
+    }
+    
+    .masonry-card:not(.portrait):not(.landscape):not(.square) {
+        height: 180px;
     }
 }
 
-/* Tablet - 768px to 1023px */
-@media (max-width: 1023px) {
+/* Tablet Portrait - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .masonry-gallery-section {
+        padding: 30px 0;
+    }
+    
+    .masonry-column {
+        min-width: 180px;
+        max-width: 180px;
+        gap: 10px;
+    }
+    
+    .masonry-track {
+        gap: 10px;
+        animation-duration: 40s;
+    }
+    
+    .masonry-card {
+        border-radius: 8px;
+    }
+    
+    .gallery-container {
+        max-height: 500px;
+    }
+    
+    .masonry-card.portrait {
+        height: 230px;
+    }
+    
+    .masonry-card.landscape {
+        height: 135px;
+    }
+    
+    .masonry-card.square {
+        height: 180px;
+    }
+    
+    .masonry-card:not(.portrait):not(.landscape):not(.square) {
+        height: 160px;
+    }
+    
+    .masonry-card:hover {
+        transform: translateY(-4px) scale(1.01);
+    }
+}
+
+/* Mobile Landscape - 576px to 767px */
+@media (min-width: 576px) and (max-width: 767px) {
     .masonry-gallery-section {
         padding: 25px 0;
     }
     
     .masonry-column {
-        min-width: 160px;
-        max-width: 160px;
+        min-width: 150px;
+        max-width: 150px;
         gap: 8px;
     }
     
     .masonry-track {
         gap: 8px;
-        animation-duration: 40s;
+        animation-duration: 35s;
     }
     
     .masonry-card {
-        border-radius: 6px;
+        border-radius: 7px;
+    }
+    
+    .gallery-container {
+        max-height: 450px;
     }
     
     .masonry-card.portrait {
-        height: 210px;
+        height: 195px;
     }
     
     .masonry-card.landscape {
-        height: 120px;
+        height: 115px;
     }
     
     .masonry-card.square {
-        height: 160px;
+        height: 150px;
+    }
+    
+    .masonry-card:not(.portrait):not(.landscape):not(.square) {
+        height: 135px;
     }
     
     .masonry-card:hover {
-        transform: translateY(-3px) scale(1.01);
+        transform: translateY(-3px);
     }
 }
 
-/* Mobile - 480px to 767px */
-@media (max-width: 767px) {
+/* Mobile Portrait - 480px to 575px */
+@media (min-width: 480px) and (max-width: 575px) {
     .masonry-gallery-section {
         padding: 20px 0;
     }
     
     .masonry-column {
-        min-width: 130px;
-        max-width: 130px;
-        gap: 6px;
+        min-width: 135px;
+        max-width: 135px;
+        gap: 8px;
     }
     
     .masonry-track {
-        gap: 6px;
-        animation-duration: 35s;
+        gap: 8px;
+        animation-duration: 32s;
     }
     
     .masonry-card {
         border-radius: 6px;
     }
     
+    .gallery-container {
+        max-height: 420px;
+    }
+    
     .masonry-card.portrait {
-        height: 170px;
+        height: 175px;
     }
     
     .masonry-card.landscape {
-        height: 95px;
+        height: 100px;
     }
     
     .masonry-card.square {
-        height: 130px;
+        height: 135px;
+    }
+    
+    .masonry-card:not(.portrait):not(.landscape):not(.square) {
+        height: 120px;
     }
     
     .masonry-card:hover {
         transform: translateY(-2px);
     }
+}
+
+/* Small Mobile - 375px to 479px */
+@media (min-width: 375px) and (max-width: 479px) {
+    .masonry-gallery-section {
+        padding: 18px 0;
+    }
+    
+    .masonry-column {
+        min-width: 120px;
+        max-width: 120px;
+        gap: 7px;
+    }
+    
+    .masonry-track {
+        gap: 7px;
+        animation-duration: 30s;
+        padding: 8px 0;
+    }
+    
+    .masonry-card {
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
     
     .gallery-container {
-        max-height: 75vh;
+        max-height: 400px;
+    }
+    
+    .masonry-card.portrait {
+        height: 155px;
+    }
+    
+    .masonry-card.landscape {
+        height: 90px;
+    }
+    
+    .masonry-card.square {
+        height: 120px;
+    }
+    
+    .masonry-card:not(.portrait):not(.landscape):not(.square) {
+        height: 110px;
+    }
+    
+    .masonry-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
     }
 }
 
-/* Small Mobile - under 480px */
-@media (max-width: 479px) {
+/* Extra Small Mobile - under 375px */
+@media (max-width: 374px) {
     .masonry-gallery-section {
         padding: 15px 0;
     }
     
     .masonry-column {
-        min-width: 110px;
-        max-width: 110px;
+        min-width: 105px;
+        max-width: 105px;
         gap: 6px;
     }
     
     .masonry-track {
         gap: 6px;
-        animation-duration: 30s;
+        animation-duration: 28s;
         padding: 6px 0;
     }
     
@@ -237,8 +415,12 @@
         box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
     }
     
+    .gallery-container {
+        max-height: 380px;
+    }
+    
     .masonry-card.portrait {
-        height: 145px;
+        height: 140px;
     }
     
     .masonry-card.landscape {
@@ -246,24 +428,24 @@
     }
     
     .masonry-card.square {
-        height: 110px;
+        height: 105px;
+    }
+    
+    .masonry-card:not(.portrait):not(.landscape):not(.square) {
+        height: 95px;
     }
     
     .masonry-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
-    }
-    
-    .gallery-container {
-        max-height: 80vh;
+        transform: translateY(-1px);
     }
 }
 
-/* Performance optimizations */
+/* Performance Optimizations */
 .masonry-track,
 .masonry-img {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
 .masonry-card {
@@ -271,3 +453,14 @@
     -webkit-transform: translateZ(0);
 }
 
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .masonry-track {
+        animation: none;
+    }
+    
+    .masonry-card,
+    .masonry-img {
+        transition: none;
+    }
+}
